@@ -7,6 +7,9 @@ public class Card {
     private Suit suit;
     private Rank rank;
 
+    //image associated with card as string then use string to bring up image file/icon
+
+
     public Card(Suit suit, Rank rank) {
         this.rank = rank;
         this.suit = suit;

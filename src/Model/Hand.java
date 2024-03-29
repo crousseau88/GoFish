@@ -2,7 +2,7 @@ package Model;
 
 import java.util.ArrayList;
 
-public abstract class Hand {
+public class Hand {
     private ArrayList<Card> hand = new ArrayList<>();
 
     public Hand() {}
