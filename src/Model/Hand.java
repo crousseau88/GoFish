@@ -14,7 +14,7 @@ public class Hand {
     public void clear() {
         hand.removeAll(hand);
     }
-    public ArrayList<Card> getCard() {
+    public ArrayList<Card> getCards() {
         return hand;
     }
     public ArrayList<Card> getHand() {
@@ -28,5 +28,9 @@ public class Hand {
     @Override
     public String toString() {
         return " " + hand;
+    }
+
+    public boolean removeCard(Card card) {
+        return hand.remove(card);
     }
 }

@@ -1,11 +1,13 @@
 package Model;
 
+import java.awt.*;
 import java.util.Objects;
 
 public class Card {
     //Instance variables
     private Suit suit;
     private Rank rank;
+    private Image img;
 
     //image associated with card as string then use string to bring up image file/icon
 
@@ -14,6 +16,14 @@ public class Card {
         this.rank = rank;
         this.suit = suit;
 
+    }
+
+    public Image getImg() {
+        return img;
+    }
+
+    public void setImg(Image img) {
+        this.img = img;
     }
 
     public int getValue() {

@@ -19,12 +19,18 @@ public class Deck {
     public int checkDeckSize() {
         return deck.size();
     }
+    public boolean isDeckEmpty() {
+        return deck.isEmpty();
+    }
     public void shuffleDeck() {
         Collections.shuffle(deck);
 
     }
     public Card dealCard() {
-        return deck.remove(0);
+        if (!isDeckEmpty()) {
+            return deck.remove(0);
+        } else {
+            throw new IllegalStateException("Cannot deal from an empty deck.");
+        }
     }
-
 }
