@@ -10,8 +10,21 @@ public class ComputerPlayer extends Player {
 
     //constructor
 
+    public ComputerPlayer(Hand hand) {
+        this.hand = hand;
+    }
+
 
     //set and gets
+
+    @Override
+    public Hand getHand() {
+        return hand;
+    }
+
+    public void setHand(Hand hand) {
+        this.hand = hand;
+    }
 
 
     //toString

@@ -4,6 +4,7 @@ public abstract class Player {
 
     //main class for Players
     private Hand hand;
+    private Hand pairs;
     //keep track of wins can write to file and rank players
     private int score;
 
