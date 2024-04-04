@@ -2,7 +2,7 @@ package Model;
 
 public abstract class Player {
 
-    //main class for Player
+    //main class for Players
     private Hand hand;
     //keep track of wins can write to file and rank players
     private int score;
