@@ -2,8 +2,9 @@ package Model;
 
 public abstract class Player {
 
-    //main class for Player
+    //main class for Players
     private Hand hand;
+    private Hand pairs;
     //keep track of wins can write to file and rank players
     private int score;
 
@@ -13,7 +14,7 @@ public abstract class Player {
         this.score = 0;
     }
 
-    // Gets the player's hand of cards
+    // Gets the player's hand of cardss
     public Hand getHand() {
         return hand;
     }

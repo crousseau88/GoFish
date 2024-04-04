@@ -33,4 +33,6 @@ public class Hand {
     public boolean removeCard(Card card) {
         return hand.remove(card);
     }
+
+    //method to compare hands/pairs using rank
 }
