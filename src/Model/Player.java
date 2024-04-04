@@ -13,7 +13,7 @@ public abstract class Player {
         this.score = 0;
     }
 
-    // Gets the player's hand of cards
+    // Gets the player's hand of cardss
     public Hand getHand() {
         return hand;
     }
