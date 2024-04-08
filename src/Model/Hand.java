@@ -34,5 +34,9 @@ public class Hand {
         return hand.remove(card);
     }
 
+    public int getCardCount() {
+        return hand.size();
+    }
+
     //method to compare hands/pairs using rank
 }

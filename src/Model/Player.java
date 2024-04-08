@@ -4,7 +4,7 @@ public abstract class Player {
 
     //main class for Players
     private Hand hand;
-    private Hand pairs;
+    private Hand books = new Hand();
     //keep track of wins can write to file and rank players
     private int score;
 
@@ -31,8 +31,28 @@ public abstract class Player {
         return this.hand.removeCard(card);
     }
 
+    // Adds cards to books (pairs of cards)
+    public void addBook(Card first, Card second) {
+        this.books.addCard(first);
+        this.books.addCard(second);
+    }
+
+    // Gets count of books (pairs) each player has
+    public int getBookCount() {
+        return this.books.getCardCount() / 2;
+    }
+
     // Ask another player for a card
-    public abstract Card askForCard();
+    public Card askForCard(Player otherPlayer, Rank rank) {
+        for (Card card : otherPlayer.getHand().getCards()) {
+            if (card.getRank().equals(rank)) {
+                otherPlayer.getHand().removeCard(card);
+                this.hand.addCard(card);
+                return card;
+            }
+        }
+        return null;
+    }
 
     // Respond to another player's request for a card
     public boolean respondToCardRequest(Card card) {
