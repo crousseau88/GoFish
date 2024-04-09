@@ -43,6 +43,7 @@ public abstract class Player {
     }
 
     // Ask another player for a card
+    // Code is here not LivePlayer in case future players added
     public Card askForCard(Player otherPlayer, Rank rank) {
         for (Card card : otherPlayer.getHand().getCards()) {
             if (card.getRank().equals(rank)) {

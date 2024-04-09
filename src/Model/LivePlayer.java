@@ -4,6 +4,10 @@ public class LivePlayer extends Player{
     private String username;
     private int score;
 
+    public LivePlayer(String username) {
+        super();
+        this.username = username;
+    }
     public String getUsername() {
         return username;
     }
