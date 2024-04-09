@@ -26,6 +26,7 @@ public class Deck {
         Collections.shuffle(deck);
 
     }
+    //deals cards from deck to players
     public Card dealCard() {
         if (!isDeckEmpty()) {
             return deck.remove(0);

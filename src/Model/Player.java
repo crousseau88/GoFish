@@ -14,7 +14,7 @@ public abstract class Player {
         this.score = 0;
     }
 
-    // Gets the player's hand of cardss
+    // Gets the player's hand of cards
     public Hand getHand() {
         return hand;
     }
@@ -55,10 +55,10 @@ public abstract class Player {
         return null;
     }
 
-    // Respond to another player's request for a card
-    public boolean respondToCardRequest(Card card) {
-        return false;
-    }
+//    // Respond to another player's request for a card
+//    public boolean respondToCardRequest(Card card) {
+//        return false;
+//    }
 
     // Increase player's score
     public void increaseScore(int points) {
