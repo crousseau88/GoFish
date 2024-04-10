@@ -1,12 +1,15 @@
 package Model;
 
-public abstract class Player {
+import java.util.*;
+
+public class Player {
 
     //main class for Players
     private Hand hand;
     private Hand books = new Hand();
     //keep track of wins can write to file and rank players
     private int score;
+
 
     // Constructor
     public Player() {
@@ -55,6 +58,16 @@ public abstract class Player {
         return null;
     }
 
+    // Asks other player for random rank from the current hand
+    public Rank chooseRankToAskFor() {
+        ArrayList<Card> cards = getHand().getCards();
+        if (!cards.isEmpty()) {
+            int index = new Random().nextInt(cards.size());
+            return cards.get(index).getRank();
+        }
+        return null;
+    }
+
 //    // Respond to another player's request for a card
 //    public boolean respondToCardRequest(Card card) {
 //        return false;
@@ -75,7 +88,32 @@ public abstract class Player {
         this.hand.clear();
         this.score = 0;
     }
+    // Creates map where rank is the key and the card array list is the value
+    // loops through hand to build hashmap
+    // iterates through the map to identify pairs
+    // removes and stores pairs in books
+    public void checkForAndAddPairs() {
+        Map<Rank, ArrayList<Card>> rankCount = new HashMap<>();
+        for (Card card : hand.getCards()) {
+            rankCount.putIfAbsent(card.getRank(), new ArrayList<>());
+            rankCount.get(card.getRank()).add(card);
+        }
 
+        Iterator<Map.Entry<Rank, ArrayList<Card>>> iterator = rankCount.entrySet().iterator();
+        while (iterator.hasNext()) {
+            Map.Entry<Rank, ArrayList<Card>> entry = iterator.next();
+            ArrayList<Card> cardsOfSameRank = entry.getValue();
+
+            if (cardsOfSameRank.size() == 2) {
+                for (Card card : cardsOfSameRank) {
+                    books.addCard(card);
+                    hand.removeCard(card);
+                }
+                increaseScore(1);
+                iterator.remove();
+            }
+        }
+    }
 
 
 }

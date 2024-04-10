@@ -4,9 +4,9 @@ public class LivePlayer extends Player{
     private String username;
 
 
-    public LivePlayer(String username) {
+    public LivePlayer() {
         super();
-        this.username = username;
+
     }
     public String getUsername() {
         return username;
