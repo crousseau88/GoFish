@@ -38,5 +38,4 @@ public class Hand {
         return hand.size();
     }
 
-    //method to compare hands/pairs using rank
 }
