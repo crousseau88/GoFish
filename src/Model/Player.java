@@ -92,8 +92,9 @@ public class Player {
     // loops through hand to build hashmap
     // iterates through the map to identify pairs
     // removes and stores pairs in books
-    public void checkForAndAddPairs() {
+    public boolean checkForAndAddPairs() {
         Map<Rank, ArrayList<Card>> rankCount = new HashMap<>();
+        boolean pairFound = false;
         for (Card card : hand.getCards()) {
             rankCount.putIfAbsent(card.getRank(), new ArrayList<>());
             rankCount.get(card.getRank()).add(card);
@@ -113,6 +114,7 @@ public class Player {
                 iterator.remove();
             }
         }
+        return pairFound;
     }
 
 
