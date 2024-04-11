@@ -23,7 +23,6 @@ public class Player {
     }
 
 
-
     // Add a card to the player's hand
     public void addCardToHand(Card card) {
         this.hand.addCard(card);
@@ -88,6 +87,7 @@ public class Player {
         this.hand.clear();
         this.score = 0;
     }
+
     // Creates map where rank is the key and the card array list is the value
     // loops through hand to build hashmap
     // iterates through the map to identify pairs
@@ -99,7 +99,6 @@ public class Player {
             rankCount.putIfAbsent(card.getRank(), new ArrayList<>());
             rankCount.get(card.getRank()).add(card);
         }
-
         Iterator<Map.Entry<Rank, ArrayList<Card>>> iterator = rankCount.entrySet().iterator();
         while (iterator.hasNext()) {
             Map.Entry<Rank, ArrayList<Card>> entry = iterator.next();
