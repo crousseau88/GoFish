@@ -26,6 +26,7 @@ public class Player {
     // Add a card to the player's hand
     public void addCardToHand(Card card) {
         this.hand.addCard(card);
+        System.out.println("Player "+ hand.getHand().toString());
     }
 
     // Remove a card from the player's hand

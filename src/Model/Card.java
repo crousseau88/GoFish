@@ -7,22 +7,24 @@ public class Card {
     //Instance variables
     private Suit suit;
     private Rank rank;
-    private Image img;
+    private int img;
 
     //image associated with card as string then use string to bring up image file/icon
 
 
-    public Card(Suit suit, Rank rank) {
+    public Card(Suit suit, Rank rank, int img) {
         this.rank = rank;
         this.suit = suit;
+        this.img = img;
+
 
     }
 
-    public Image getImg() {
+    public int getImg() {
         return img;
     }
 
-    public void setImg(Image img) {
+    public void setImg(int img) {
         this.img = img;
     }
 

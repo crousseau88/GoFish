@@ -1,7 +1,7 @@
 package Model;
 
 public enum Suit {
-    HEARTS("Hearts"), SPADES("Spades"), CLUBS("Clubs"), DIAMONDS("Diamonds");
+     SPADES("Spades"), HEARTS("Hearts"),  DIAMONDS("Diamonds"), CLUBS("Clubs");
 
     private String suit;
 

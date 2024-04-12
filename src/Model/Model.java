@@ -4,29 +4,42 @@ public class Model {
     private Player player1;
     private Player computer;
     private Deck deck;
+    private Hand hand;
 
 
     public Model() {
         player1 = new LivePlayer();
         computer = new ComputerPlayer();
         deck = new Deck();
+        hand = new Hand();
 
 
     }
 
     public void startGame() {
         deck.shuffleDeck();
-        for (int i = 0; i < 7; i++) {
-            dealInitialCards();
-        }
+
+        dealInitialCards();
+
+//
+
+        System.out.println(player1.getHand().toString());//prints hand for player1
+        System.out.println(computer.getHand().toString());//prints hand for computer
         checkInitialPairs();
+        System.out.println(player1.getBookCount());
+        System.out.println(computer.getBookCount());
         drawCards(player1);
         drawCards(computer);
+        System.out.println(player1.getHand().toString());
+        System.out.println(computer.getHand().toString());
+
     }
 
     private void dealInitialCards() {
-        player1.addCardToHand(deck.dealCard());
-        computer.addCardToHand(deck.dealCard());
+        for (int i = 0; i < 7; i++) {
+            player1.addCardToHand(deck.dealCard());
+            computer.addCardToHand(deck.dealCard());
+        }
     }
 
     private void checkInitialPairs() {
@@ -64,7 +77,7 @@ public class Model {
         }
     }
 
-    // Draws 
+    // Draws extra cards when player needs to draw from deck not sure if works
     private void drawExtraCards(Player player) {
         for (int i = 0; i < 2 && !deck.isDeckEmpty(); i++) {
             player.getHand().addCard(deck.dealCard());
@@ -74,8 +87,10 @@ public class Model {
     private void drawCards(Player player) {
         while (player.getHand().getCardCount() < 7 && !deck.isDeckEmpty()) {
             player.getHand().addCard(deck.dealCard());
+            System.out.println("test deal");
         }
         if (player.checkForAndAddPairs()) {
+            System.out.println("test draw");
             drawExtraCards(player);
         }
     }
