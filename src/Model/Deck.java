@@ -39,7 +39,7 @@ public class Deck {
     }
 
     private void imageIcons(){
-        img.add(new ImageIcon("Cards/1.png", "Ace of Spades"));
+        img.add(new ImageIcon("Cards/1.png", "A of Spades"));
         img.add(new ImageIcon("Cards/2.png", "2 of Spades"));
         img.add(new ImageIcon("Cards/3.png", "3 of Spades"));
         img.add(new ImageIcon("Cards/4.png", "4 of Spades"));
