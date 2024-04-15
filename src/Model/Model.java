@@ -21,8 +21,7 @@ public class Model {
 
         dealInitialCards();
 
-//
-
+        //tests logic
         System.out.println("Live Player hand: " + player1.getHand().toString());//prints hand for player1
         System.out.println("Computer hand: " + computer.getHand().toString());//prints hand for computer
         checkForPairs();
@@ -50,6 +49,7 @@ public class Model {
 
 
     }
+
 
     private void dealInitialCards() {
         for (int i = 0; i < 7; i++) {
