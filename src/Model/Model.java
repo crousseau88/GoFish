@@ -23,15 +23,31 @@ public class Model {
 
 //
 
-        System.out.println(player1.getHand().toString());//prints hand for player1
-        System.out.println(computer.getHand().toString());//prints hand for computer
-        checkInitialPairs();
-        System.out.println(player1.getBookCount());
-        System.out.println(computer.getBookCount());
+        System.out.println("Live Player hand: " + player1.getHand().toString());//prints hand for player1
+        System.out.println("Computer hand: " + computer.getHand().toString());//prints hand for computer
+        checkForPairs();
+        System.out.println("-----------------------------------------------");
+        System.out.println("Live Player book count: " + player1.getBookCount());
+        System.out.println("Computer book count: " + computer.getBookCount());
         drawCards(player1);
         drawCards(computer);
-        System.out.println(player1.getHand().toString());
-        System.out.println(computer.getHand().toString());
+        System.out.println("-----------------------------------------------");
+        System.out.println("Live Player hand: " + player1.getHand().toString());
+        System.out.println("Computer hand: " + computer.getHand().toString());
+        checkForPairs();
+        System.out.println("-----------------------------------------------");
+        System.out.println("Live Player book count: " + player1.getBookCount());
+        System.out.println("Computer book count: " + computer.getBookCount());
+
+        drawCards(player1);
+        drawCards(computer);
+        System.out.println("-----------------------------------------------");
+        System.out.println("Live Player hand: " + player1.getHand().toString());
+        System.out.println("Computer hand: " + computer.getHand().toString());
+        System.out.println("-----------------------------------------------");
+        System.out.println("Live Player books: " + player1.getBooks().toString());
+        System.out.println("Computer books: " + computer.getBooks().toString());
+
 
     }
 
@@ -42,7 +58,8 @@ public class Model {
         }
     }
 
-    private void checkInitialPairs() {
+    //checks for book pairs
+    private void checkForPairs() {
         player1.checkForAndAddPairs();
         computer.checkForAndAddPairs();
     }
@@ -73,11 +90,10 @@ public class Model {
         }
 
         if (drawCard && computer.checkForAndAddPairs()) {
-            drawExtraCards(computer);
+            drawCards(computer);
         }
     }
 
-    // Draws extra cards when player needs to draw from deck not sure if works
     private void drawExtraCards(Player player) {
         for (int i = 0; i < 2 && !deck.isDeckEmpty(); i++) {
             player.getHand().addCard(deck.dealCard());
@@ -85,13 +101,18 @@ public class Model {
     }
 
     private void drawCards(Player player) {
+        boolean foundPairs = false;
         while (player.getHand().getCardCount() < 7 && !deck.isDeckEmpty()) {
             player.getHand().addCard(deck.dealCard());
-            System.out.println("test deal");
+            // Move the pair checking inside the loop to check after each card is drawn
+            if (player.checkForAndAddPairs()) {
+                foundPairs = true;
+            }
         }
-        if (player.checkForAndAddPairs()) {
-            System.out.println("test draw");
-            drawExtraCards(player);
+        // Only draw extra cards if pairs were found during this method call
+        if (foundPairs) {
+            System.out.println("Extra cards drawn due to forming pairs");
+            drawCards(player);
         }
     }
 

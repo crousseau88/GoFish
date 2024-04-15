@@ -117,5 +117,7 @@ public class Player {
         return pairFound;
     }
 
-
+    public Hand getBooks() {
+        return books;
+    }
 }
