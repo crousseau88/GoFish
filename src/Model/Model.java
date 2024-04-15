@@ -70,12 +70,12 @@ public class Model {
 
         if (receivedCard == null && !deck.isDeckEmpty()) {
             player1.getHand().addCard(deck.dealCard());
-            drawCard = true;  // Indicate that a card was drawn because the asked-for card wasn't received.
+            drawCard = true;
         }
 
-        // If a pair is formed after drawing from the deck, draw an extra card.
+
         if (drawCard && player1.checkForAndAddPairs()) {
-            drawExtraCards(player1); // Assuming the requirement is to draw two extra cards.
+            drawExtraCards(player1);
         }
     }
 
@@ -104,12 +104,12 @@ public class Model {
         boolean foundPairs = false;
         while (player.getHand().getCardCount() < 7 && !deck.isDeckEmpty()) {
             player.getHand().addCard(deck.dealCard());
-            // Move the pair checking inside the loop to check after each card is drawn
+
             if (player.checkForAndAddPairs()) {
                 foundPairs = true;
             }
         }
-        // Only draw extra cards if pairs were found during this method call
+
         if (foundPairs) {
             System.out.println("Extra cards drawn due to forming pairs");
             drawCards(player);
