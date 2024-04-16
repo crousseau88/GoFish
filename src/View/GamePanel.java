@@ -1,6 +1,8 @@
 package View;
 
-import Model.LivePlayer;
+
+
+import Model.Player;
 
 import javax.swing.*;
 import java.awt.*;
@@ -9,10 +11,10 @@ import java.awt.event.ActionListener;
 public class GamePanel extends JPanel {
     private JLabel gameStatusLabel;
     private JButton endTurnButton;
-    private LivePlayer player1;
+    private Player player1;
     private JLabel computerPlayerLabel;
 
-    public GamePanel(LivePlayer player1) {
+    public GamePanel() {
         this.player1 = player1;
         setLayout(new BorderLayout());
         setBackground(new Color(100, 100, 200));

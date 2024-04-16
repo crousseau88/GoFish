@@ -21,8 +21,7 @@ public class Deck {
                 counter++;
             }
         }
-        System.out.println(deck);//prints out deck
-        System.out.println(deck.size());//tests deck contains 52 cards
+
 
 
 
@@ -100,5 +99,12 @@ public class Deck {
         } else {
             throw new IllegalStateException("Cannot deal from an empty deck.");
         }
+    }
+
+    public ImageIcon getImg(int index) {
+        if (index >= 0 && index < img.size()) {
+            return img.get(index);
+        }
+        return null;
     }
 }

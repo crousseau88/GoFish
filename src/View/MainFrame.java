@@ -1,12 +1,11 @@
 package View;
 
-import Model.LivePlayer;
 
 import javax.swing.*;
 
 public class MainFrame extends JFrame {
     private InitialPanel ip;
-    private GamePanel gamePanel; // Added GamePanel reference
+    private GamePanel gamePanel;
 
     public MainFrame(){
         super("GUI Tester for GoFish!");
@@ -20,16 +19,16 @@ public class MainFrame extends JFrame {
         setVisible(true);
     }
 
-    // Method to show the GamePanel
+
     public void showGamePanel() {
-        // Remove the current panel
+
         getContentPane().remove(ip);
 
-        // Create and add the GamePanel
-        gamePanel = new GamePanel(new LivePlayer()); // You might need to pass any necessary parameters here
+
+        gamePanel = new GamePanel();
         getContentPane().add(gamePanel);
 
-        // Repaint and validate the frame
+
         revalidate();
         repaint();
     }

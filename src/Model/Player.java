@@ -9,12 +9,14 @@ public class Player {
     private Hand books = new Hand();
     //keep track of wins can write to file and rank players
     private int score;
+    private String username;
 
 
     // Constructor
     public Player() {
         this.hand = new Hand();
         this.score = 0;
+
     }
 
     // Gets the player's hand of cards
@@ -119,5 +121,13 @@ public class Player {
 
     public Hand getBooks() {
         return books;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 }

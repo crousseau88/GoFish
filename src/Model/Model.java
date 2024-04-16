@@ -1,51 +1,44 @@
 package Model;
 
 public class Model {
-    private Player player1;
+    private Player player;
     private Player computer;
     private Deck deck;
     private Hand hand;
-
+    private static Model instance;
 
     public Model() {
-        player1 = new LivePlayer();
-        computer = new ComputerPlayer();
+        player = new Player();
+        computer = new Player();
+
         deck = new Deck();
         hand = new Hand();
 
 
     }
-
+    public static Model getInstance() {
+        if (instance == null) {
+            instance = new Model();
+        }
+        return instance;
+    }
     public void startGame() {
         deck.shuffleDeck();
+
 
         dealInitialCards();
 
         //tests logic
-        System.out.println("Live Player hand: " + player1.getHand().toString());//prints hand for player1
+        System.out.println("Live Player hand: " + player.getHand().toString());//prints hand for player1
         System.out.println("Computer hand: " + computer.getHand().toString());//prints hand for computer
         checkForPairs();
         System.out.println("-----------------------------------------------");
-        System.out.println("Live Player book count: " + player1.getBookCount());
+        System.out.println("Live Player book count: " + player.getBookCount());
         System.out.println("Computer book count: " + computer.getBookCount());
-        drawCards(player1);
+        drawCards(player);
         drawCards(computer);
-        System.out.println("-----------------------------------------------");
-        System.out.println("Live Player hand: " + player1.getHand().toString());
-        System.out.println("Computer hand: " + computer.getHand().toString());
-        checkForPairs();
-        System.out.println("-----------------------------------------------");
-        System.out.println("Live Player book count: " + player1.getBookCount());
-        System.out.println("Computer book count: " + computer.getBookCount());
-
-        drawCards(player1);
-        drawCards(computer);
-        System.out.println("-----------------------------------------------");
-        System.out.println("Live Player hand: " + player1.getHand().toString());
-        System.out.println("Computer hand: " + computer.getHand().toString());
-        System.out.println("-----------------------------------------------");
-        System.out.println("Live Player books: " + player1.getBooks().toString());
-        System.out.println("Computer books: " + computer.getBooks().toString());
+        System.out.println("Live Player hand: " + player.getHand().toString());//prints hand for player1
+        System.out.println("Computer hand: " + computer.getHand().toString());//prints hand for computer
 
 
     }
@@ -53,36 +46,36 @@ public class Model {
 
     private void dealInitialCards() {
         for (int i = 0; i < 7; i++) {
-            player1.addCardToHand(deck.dealCard());
+            player.addCardToHand(deck.dealCard());
             computer.addCardToHand(deck.dealCard());
         }
     }
 
     //checks for book pairs
     private void checkForPairs() {
-        player1.checkForAndAddPairs();
+        player.checkForAndAddPairs();
         computer.checkForAndAddPairs();
     }
 
     public void playerTurn(Rank chosenRank) {
-        Card receivedCard = player1.askForCard(computer, chosenRank);
+        Card receivedCard = player.askForCard(computer, chosenRank);
         boolean drawCard = false;
 
         if (receivedCard == null && !deck.isDeckEmpty()) {
-            player1.getHand().addCard(deck.dealCard());
+            player.getHand().addCard(deck.dealCard());
             drawCard = true;
         }
 
 
-        if (drawCard && player1.checkForAndAddPairs()) {
-            drawExtraCards(player1);
+        if (drawCard && player.checkForAndAddPairs()) {
+            drawExtraCards(player);
         }
     }
 
     public void computerTurn() {
         boolean drawCard = false;
         Rank chosenRank = computer.chooseRankToAskFor();
-        Card receivedCard = computer.askForCard(player1, chosenRank);
+        Card receivedCard = computer.askForCard(player, chosenRank);
 
         if (receivedCard == null && !deck.isDeckEmpty()) {
             computer.getHand().addCard(deck.dealCard());
@@ -115,8 +108,39 @@ public class Model {
             drawCards(player);
         }
     }
+    public void setPlayerUsername(String username) {
+        player.setUsername(username);
+    }
 
     public boolean isGameOver() {
-        return player1.getHand().getCardCount() == 0 && computer.getHand().getCardCount() == 0;
+        return player.getHand().getCardCount() == 0 && computer.getHand().getCardCount() == 0;
+    }
+
+    public Player getPlayer1() {
+        return player;
+    }
+
+    public void setPlayer1(Player player1) {
+        this.player = player1;
+    }
+
+    public Player getComputer() {
+        return computer;
+    }
+
+    public void setComputer(Player computer) {
+        this.computer = computer;
+    }
+
+    public Deck getDeck() {
+        return deck;
+    }
+
+    public void setDeck(Deck deck) {
+        this.deck = deck;
+    }
+
+    public Player getPlayer() {
+        return player;
     }
 }

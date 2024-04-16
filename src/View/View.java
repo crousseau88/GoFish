@@ -10,6 +10,7 @@ public class View {
         mf = new MainFrame();
         tp = mf.getIp().getTp();
         gp = mf.getGamePanel(); // Accessing the game panel from the main frame
+
     }
 
     public MainFrame getMf() {
