@@ -4,6 +4,7 @@ import Model.Model;
 import View.View;
 import Model.Player;
 import View.GamePanel;
+import Model.Rank;
 
 import javax.swing.*;
 import java.awt.*;
@@ -13,6 +14,7 @@ import java.awt.event.ActionListener;
 public class Controller {
     private Model model;
     private View view;
+    private Rank rank;
 
     public Controller(Model m, View v) {
         this.model = m;
@@ -30,14 +32,43 @@ public class Controller {
 
         view.getMf().getGamePanel().updatePlayerHand(model.getPlayer().getHand().getCards(), model.getDeck());
     }
+    private void initializeGame() {
+        model.startGame(); // Shuffles deck, deals cards, checks initial pairs
+        updateGameView();
+    }
+
+
+    private void updateGameView() {
+        view.getMf().getGamePanel().updatePlayerHand(model.getPlayer().getHand().getCards(), model.getDeck());
+        String turnStatus = model.isPlayerTurn() ? "Player's turn." : "Computer's turn.";
+        view.getMf().getGamePanel().updateGameStatus("Game Started: " + turnStatus);    }
+
 
     private void addGameListeners() {
+
+        view.getTp().getTwoPairButton().addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                model.startGame();
+                view.getMf().showGamePanel();
+                view.getMf().getGamePanel().updatePlayerHand(model.getPlayer().getHand().getCards(), model.getDeck());
+                view.getMf().getGamePanel().updateGameStatus("Game Started: It's your turn!");
+            }
+        });
+        view.getTp().getFourPairButton().addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                view.getMf().showGamePanel();
+            }
+        });
+
+
         view.getMf().getGamePanel().addDrawCardButtonListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                model.playerDrawCard();
+                System.out.println("Draw Card button clicked.");
+                model.drawCard();
+                ;
                 view.getMf().getGamePanel().updatePlayerHand(model.getPlayer().getHand().getCards(), model.getDeck());
-
+                view.getMf().getGamePanel().updateGameStatus("Card Drawn. Your turn continues.");
             }
         });
 
@@ -50,26 +81,29 @@ public class Controller {
             }
         });
 
-        view.getTp().getTwoPairButton().addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                model.startGame();
-                view.getMf().showGamePanel();
-                view.getMf().getGamePanel().updatePlayerHand(model.getPlayer().getHand().getCards(), model.getDeck());
-                view.getMf().getGamePanel().updateGameStatus("Game Started: It's your turn!");
-            }
-        });
-
-        view.getTp().getFourPairButton().addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                view.getMf().showGamePanel();
-            }
-        });
-
         view.getTp().getRulesButton().addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 displayRules();
             }
         });
+    }
+
+    private void setupCardClickListeners() {
+        view.getMf().getGamePanel().addPropertyChangeListener("cardClicked", evt -> {
+            handleCardRequest((String) evt.getNewValue());
+        });
+    }
+
+    private void handleCardRequest(String rank) {
+        Rank requestedRank = Rank.valueOf(rank);
+        boolean hasCard = model.askComputerForRank(requestedRank);
+        if (hasCard) {
+            view.getMf().getGamePanel().updateGameStatus("Computer has the card of rank: " + rank);
+
+        } else {
+            view.getMf().getGamePanel().updateGameStatus("Computer does not have the card of rank: " + rank);
+
+        }
     }
 
     private void displayRules() {

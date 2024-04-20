@@ -108,6 +108,7 @@ public class Player {
             ArrayList<Card> cardsOfSameRank = entry.getValue();
 
             if (cardsOfSameRank.size() == 2) {
+                pairFound = true;
                 for (Card card : cardsOfSameRank) {
                     books.addCard(card);
                     hand.removeCard(card);
@@ -118,7 +119,14 @@ public class Player {
         }
         return pairFound;
     }
-
+    public boolean hasRank(Rank rank) {
+        for (Card card : hand.getCards()) {
+            if (card.getRank() == rank) {
+                return true;
+            }
+        }
+        return false;
+    }
     public Hand getBooks() {
         return books;
     }

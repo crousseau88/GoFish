@@ -5,6 +5,7 @@ public class Model {
     private Player computer;
     private Deck deck;
     private Hand hand;
+    private boolean isPlayerTurn;
 
 
     public Model() {
@@ -19,29 +20,44 @@ public class Model {
 
     public void startGame() {
         deck.shuffleDeck();
-
-
         dealInitialCards();
+        checkForPairs(player);
+        checkForPairs(computer);
+        isPlayerTurn = true;
+        playTurn();
 
         //tests logic
         System.out.println("Live Player hand: " + player.getHand().toString());//prints hand for player1
         System.out.println("Computer hand: " + computer.getHand().toString());//prints hand for computer
-        checkForPairs(player);
-        checkForPairs(computer);
         System.out.println("-----------------------------------------------");
         System.out.println("Live Player book count: " + player.getBookCount());
         System.out.println("Computer book count: " + computer.getBookCount());
-
         System.out.println("Live Player hand: " + player.getHand().toString());//prints hand for player1
         System.out.println("Computer hand: " + computer.getHand().toString());//prints hand for computer
 
 
-
     }
 
-
+    private void manageTurns() {
+        while (!isGameOver()) {
+            if (isPlayerTurn) {
+                playerTurn();
+            } else {
+                computerTurn();
+            }
+            isPlayerTurn = !isPlayerTurn;  // Toggle turns
+        }
+        System.out.println(determineWinner() + " wins the game!");
+    }
+    public void playTurn() {
+        if (isPlayerTurn) {
+            playerTurn();
+        } else {
+            computerTurn();
+        }
+    }
     private void dealInitialCards() {
-        for (int i = 0; i < 7; i++) {
+        for (int i = 0; i <= 7; i++) {
             player.addCardToHand(deck.dealCard());
             computer.addCardToHand(deck.dealCard());
         }
@@ -49,13 +65,30 @@ public class Model {
 
     //checks for book pairs
     private void checkForPairs(Player player) {
-        player.checkForAndAddPairs();
-        if (player.getBooks().getCardCount() > 0) {
+        boolean playerFoundPair = player.checkForAndAddPairs();
+        boolean computerFoundPair = computer.checkForAndAddPairs();
+
+        if (playerFoundPair) {
             System.out.println(player.getUsername() + " has made some pairs.");
+            drawCardsToMinimum(player, 7);
+        }
+        if (computerFoundPair) {
+            System.out.println("Computer has made some pairs.");
+            drawCardsToMinimum(computer, 7);
         }
     }
+
+
+    private void drawCardsToMinimum(Player player, int minimumCardCount) {
+        while (player.getHand().getCardCount() < minimumCardCount && !deck.isDeckEmpty()) {
+            Card drawnCard = deck.dealCard();
+            player.getHand().addCard(drawnCard);
+        }
+    }
+
+
     private void askForCardFromComputer() {
-        Rank requestedRank = player.chooseRankToAskFor(); // This could be triggered by UI interaction
+        Rank requestedRank = player.chooseRankToAskFor();
         Card receivedCard = computer.giveCard(requestedRank);
         if (receivedCard != null) {
             player.addCardToHand(receivedCard);
@@ -63,7 +96,7 @@ public class Model {
             checkForPairs(player);
         } else {
             System.out.println("Go Fish");
-            drawCard(player);
+            drawCard();
         }
     }
 
@@ -74,50 +107,62 @@ public class Model {
 
     }
 
-    public void computerTurn() {
-        boolean drawCard = false;
-        Rank chosenRank = computer.chooseRankToAskFor();
-        Card receivedCard = computer.askForCard(player, chosenRank);
-
-        if (receivedCard == null && !deck.isDeckEmpty()) {
-            computer.getHand().addCard(deck.dealCard());
-            drawCard = true;
-        }
-
-        if (drawCard && computer.checkForAndAddPairs()) {
-            drawCards(computer);
-        }
+    public void toggleTurn() {
+        isPlayerTurn = !isPlayerTurn;
     }
 
+    public void computerTurn() {
+            boolean canPlay = false;
+
+            Rank chosenRank = computer.chooseRankToAskFor();
+            if (chosenRank != null) {
+                Card receivedCard = computer.askForCard(player, chosenRank);
+
+                if (receivedCard != null) {
+                    computer.getHand().addCard(receivedCard);
+                    System.out.println("Computer received " + receivedCard + " from player.");
+                    canPlay = computer.checkForAndAddPairs();  // Check if adding this card created a pair
+                }
+            }
+
+            if (!canPlay && !deck.isDeckEmpty()) {
+                // Computer draws a card from the deck if it cannot play
+                Card drawnCard = deck.dealCard();
+                computer.getHand().addCard(drawnCard);
+                System.out.println("Computer draws a " + drawnCard + " from deck.");
+                canPlay = computer.checkForAndAddPairs();
+            }
+
+            if (!canPlay) {
+                System.out.println("Computer has no moves left and ends its turn.");
+            }
+            toggleTurn();
+            if (isPlayerTurn) {
+                playerTurn();
+            }
+
+    }
+
+    public boolean isPlayerTurn() {
+        return isPlayerTurn;
+    }
     private void drawExtraCards(Player player) {
         for (int i = 0; i < 2 && !deck.isDeckEmpty(); i++) {
             player.getHand().addCard(deck.dealCard());
         }
     }
 
-    private void drawCards(Player player) {
-        boolean foundPairs = false;
-        while (player.getHand().getCardCount() < 7 && !deck.isDeckEmpty()) {
-            player.getHand().addCard(deck.dealCard());
-
-            if (player.checkForAndAddPairs()) {
-                foundPairs = true;
-            }
-        }
-
-        if (foundPairs) {
-            System.out.println("Extra cards drawn due to forming pairs");
-            drawCards(player);
-        }
-    }
-
-    private void drawCard(Player player) {
+    public void drawCard() {
         if (!deck.isDeckEmpty()) {
             Card drawnCard = deck.dealCard();
             player.addCardToHand(drawnCard);
-            checkForPairs(player);
         }
     }
+
+    public boolean askComputerForRank(Rank rank) {
+        return computer.hasRank(rank);
+    }
+
 
     public void setPlayerUsername(String username) {
         player.setUsername(username);
@@ -127,13 +172,6 @@ public class Model {
         return player.getHand().getCardCount() == 0 && computer.getHand().getCardCount() == 0;
     }
 
-    public Player getPlayer1() {
-        return player;
-    }
-
-    public void setPlayer1(Player player1) {
-        this.player = player1;
-    }
 
     public Player getComputer() {
         return computer;
@@ -155,30 +193,13 @@ public class Model {
         return player;
     }
 
-    public void playerDrawCard() {
-        if (!deck.isDeckEmpty()) {
-            Card drawnCard = deck.dealCard();
-            player.addCardToHand(drawnCard);
-
-            boolean pairFound = player.checkForAndAddPairs();
-            if (pairFound) {
-                drawExtraCards(player);
-            }
-        }
-    }
 
     public void endTurn() {
-        boolean isPlayerTurn = true;
-        if (!isPlayerTurn) {
-            computerTurn();
-        }
-
-        if (isGameOver()) {
-            determineWinner();
-        }
+        isPlayerTurn = !isPlayerTurn;
+        System.out.println((isPlayerTurn ? "Player" : "Computer") + "'s turn.");
     }
 
-    private String determineWinner() {
+    public String determineWinner() {
         if (player.getBookCount() > computer.getBookCount()) {
             return "Player";
         } else if (computer.getBookCount() > player.getBookCount()) {

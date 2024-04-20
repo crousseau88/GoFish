@@ -98,10 +98,19 @@ public class GamePanel extends JPanel implements ActionListener {
                 JLabel cardLabel = new JLabel(icon);
                 playerHandPanel.add(cardLabel);
             }
+            playerHandPanel.revalidate();
+            playerHandPanel.repaint();
         }
         playerHandPanel.revalidate();
         playerHandPanel.repaint();
+        System.out.println("Player hand updated with " + hand.size() + " cards.");
     }
+    private void cardClicked(String rank) {
+        // Notify controller that a rank was clicked
+        firePropertyChange("cardClicked", "", rank);
+    }
+
+
 
     @Override
     public void actionPerformed(ActionEvent e) {
