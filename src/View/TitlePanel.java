@@ -16,8 +16,8 @@ public class TitlePanel extends JPanel {
         setLayout(null);
         setBackground(new Color(0, 100, 0));
 
-        twoPairButton = new JButton("2 Pair");
-        fourPairButton = new JButton("4 Pair");
+        twoPairButton = new JButton("2 Card");
+        fourPairButton = new JButton("4 Card");//may implement later on
         rulesButton = new JButton("Rules");
 
         twoPairButton.setBounds(new Rectangle(440, 260, 100, 30));
