@@ -130,4 +130,15 @@ public class Player {
     public void setUsername(String username) {
         this.username = username;
     }
+
+    //gives other player card from hand
+    public Card giveCard(Rank rank) {
+        for (Card card : hand.getCards()) {
+            if (card.getRank() == rank) {
+                hand.removeCard(card);
+                return card;
+            }
+        }
+        return null;
+    }
 }

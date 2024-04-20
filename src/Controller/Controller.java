@@ -28,7 +28,6 @@ public class Controller {
 
     private void setupGame() {
 
-        model.startGame();
         view.getMf().getGamePanel().updatePlayerHand(model.getPlayer().getHand().getCards(), model.getDeck());
     }
 
@@ -53,7 +52,10 @@ public class Controller {
 
         view.getTp().getTwoPairButton().addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+                model.startGame();
                 view.getMf().showGamePanel();
+                view.getMf().getGamePanel().updatePlayerHand(model.getPlayer().getHand().getCards(), model.getDeck());
+                view.getMf().getGamePanel().updateGameStatus("Game Started: It's your turn!");
             }
         });
 

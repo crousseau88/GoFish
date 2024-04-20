@@ -11,7 +11,7 @@ public class MainFrame extends JFrame {
     private GamePanel gamePanel;
 
     public MainFrame() {
-        super("GUI Tester for GoFish!");
+        super("GoFish!");
 
         // Create initial panel
         ip = new InitialPanel(this);

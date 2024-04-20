@@ -26,14 +26,15 @@ public class Model {
         //tests logic
         System.out.println("Live Player hand: " + player.getHand().toString());//prints hand for player1
         System.out.println("Computer hand: " + computer.getHand().toString());//prints hand for computer
-        checkForPairs();
+        checkForPairs(player);
+        checkForPairs(computer);
         System.out.println("-----------------------------------------------");
         System.out.println("Live Player book count: " + player.getBookCount());
         System.out.println("Computer book count: " + computer.getBookCount());
-        drawCards(player);
-        drawCards(computer);
+
         System.out.println("Live Player hand: " + player.getHand().toString());//prints hand for player1
         System.out.println("Computer hand: " + computer.getHand().toString());//prints hand for computer
+
 
 
     }
@@ -47,24 +48,30 @@ public class Model {
     }
 
     //checks for book pairs
-    private void checkForPairs() {
+    private void checkForPairs(Player player) {
         player.checkForAndAddPairs();
-        computer.checkForAndAddPairs();
+        if (player.getBooks().getCardCount() > 0) {
+            System.out.println(player.getUsername() + " has made some pairs.");
+        }
+    }
+    private void askForCardFromComputer() {
+        Rank requestedRank = player.chooseRankToAskFor(); // This could be triggered by UI interaction
+        Card receivedCard = computer.giveCard(requestedRank);
+        if (receivedCard != null) {
+            player.addCardToHand(receivedCard);
+            System.out.println("Player received " + receivedCard + " from computer.");
+            checkForPairs(player);
+        } else {
+            System.out.println("Go Fish");
+            drawCard(player);
+        }
     }
 
-    public void playerTurn(Rank chosenRank) {
-        Card receivedCard = player.askForCard(computer, chosenRank);
-        boolean drawCard = false;
-
-        if (receivedCard == null && !deck.isDeckEmpty()) {
-            player.getHand().addCard(deck.dealCard());
-            drawCard = true;
+    public void playerTurn() {
+        if (!player.checkForAndAddPairs()) {
+            askForCardFromComputer();
         }
 
-
-        if (drawCard && player.checkForAndAddPairs()) {
-            drawExtraCards(player);
-        }
     }
 
     public void computerTurn() {
@@ -101,6 +108,14 @@ public class Model {
         if (foundPairs) {
             System.out.println("Extra cards drawn due to forming pairs");
             drawCards(player);
+        }
+    }
+
+    private void drawCard(Player player) {
+        if (!deck.isDeckEmpty()) {
+            Card drawnCard = deck.dealCard();
+            player.addCardToHand(drawnCard);
+            checkForPairs(player);
         }
     }
 
