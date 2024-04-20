@@ -10,34 +10,33 @@ public class Deck {
     private ArrayList<ImageIcon> img = new ArrayList<>();
 
 
-
-
     public Deck() {
         imageIcons();
         int counter = 0;
-        for(Suit suit : Suit.values()) {
-            for(Rank rank : Rank.values()) {
+        for (Suit suit : Suit.values()) {
+            for (Rank rank : Rank.values()) {
                 deck.add(new Card(suit, rank, counter));
                 counter++;
             }
         }
 
 
-
-
     }
+
     public int checkDeckSize() {
         return deck.size();
     }
+
     public boolean isDeckEmpty() {
         return deck.isEmpty();
     }
+
     public void shuffleDeck() {
         Collections.shuffle(deck);
 
     }
 
-    private void imageIcons(){
+    private void imageIcons() {
         img.add(new ImageIcon("Cards/1.png", "A of Spades"));
         img.add(new ImageIcon("Cards/2.png", "2 of Spades"));
         img.add(new ImageIcon("Cards/3.png", "3 of Spades"));
@@ -47,9 +46,9 @@ public class Deck {
         img.add(new ImageIcon("Cards/7.png", "7 of Spades"));
         img.add(new ImageIcon("Cards/8.png", "8 of Spades"));
         img.add(new ImageIcon("Cards/9.png", "9 of Spades"));
-        img.add(new ImageIcon("Cards/10.png","10 of Spades"));
-        img.add(new ImageIcon("Cards/11.png","J of Spades"));
-        img.add(new ImageIcon("Cards/12.png","Q of Spades"));
+        img.add(new ImageIcon("Cards/10.png", "10 of Spades"));
+        img.add(new ImageIcon("Cards/11.png", "J of Spades"));
+        img.add(new ImageIcon("Cards/12.png", "Q of Spades"));
         img.add(new ImageIcon("Cards/13.png", "K of Spades"));
         img.add(new ImageIcon("Cards/14.png", "A of Hearts"));
         img.add(new ImageIcon("Cards/15.png", "2 of Hearts"));
@@ -92,6 +91,7 @@ public class Deck {
         img.add(new ImageIcon("Cards/52.png", "K of Clubs"));
 
     }
+
     //deals cards from deck to players
     public Card dealCard() {
         if (!isDeckEmpty()) {
@@ -101,10 +101,13 @@ public class Deck {
         }
     }
 
-    public ImageIcon getImg(int index) {
+    //gets card image
+    public ImageIcon getCardImage(Card card) {
+        int index = card.getImg();
         if (index >= 0 && index < img.size()) {
             return img.get(index);
         }
         return null;
     }
+
 }

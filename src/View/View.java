@@ -6,10 +6,15 @@ public class View {
     private GamePanel gp;
 
     // Constructor
-    public View(){
+    public View() {
         mf = new MainFrame();
         tp = mf.getIp().getTp();
-        gp = mf.getGamePanel(); // Accessing the game panel from the main frame
+        gp = mf.getGamePanel();
+
+    }
+
+    public void setupGamePanel() {
+        gp = mf.getGamePanel();
 
     }
 

@@ -5,7 +5,7 @@ public class Model {
     private Player computer;
     private Deck deck;
     private Hand hand;
-    private static Model instance;
+
 
     public Model() {
         player = new Player();
@@ -16,12 +16,7 @@ public class Model {
 
 
     }
-    public static Model getInstance() {
-        if (instance == null) {
-            instance = new Model();
-        }
-        return instance;
-    }
+
     public void startGame() {
         deck.shuffleDeck();
 
@@ -108,6 +103,7 @@ public class Model {
             drawCards(player);
         }
     }
+
     public void setPlayerUsername(String username) {
         player.setUsername(username);
     }
@@ -142,5 +138,38 @@ public class Model {
 
     public Player getPlayer() {
         return player;
+    }
+
+    public void playerDrawCard() {
+        if (!deck.isDeckEmpty()) {
+            Card drawnCard = deck.dealCard();
+            player.addCardToHand(drawnCard);
+
+            boolean pairFound = player.checkForAndAddPairs();
+            if (pairFound) {
+                drawExtraCards(player);
+            }
+        }
+    }
+
+    public void endTurn() {
+        boolean isPlayerTurn = true;
+        if (!isPlayerTurn) {
+            computerTurn();
+        }
+
+        if (isGameOver()) {
+            determineWinner();
+        }
+    }
+
+    private String determineWinner() {
+        if (player.getBookCount() > computer.getBookCount()) {
+            return "Player";
+        } else if (computer.getBookCount() > player.getBookCount()) {
+            return "Computer";
+        } else {
+            return "It's a tie!";
+        }
     }
 }

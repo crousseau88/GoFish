@@ -1,53 +1,122 @@
 package View;
 
-
-
 import Model.Player;
+import Model.Card;
+import Model.Deck;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
-public class GamePanel extends JPanel {
+public class GamePanel extends JPanel implements ActionListener {
     private JLabel gameStatusLabel;
     private JButton endTurnButton;
-    private Player player1;
-    private JLabel computerPlayerLabel;
+    private JButton drawCardButton;
+    private JPanel playerHandPanel;
+    private int test = 10;
 
-    public GamePanel() {
-        this.player1 = player1;
-        setLayout(new BorderLayout());
-        setBackground(new Color(100, 100, 200));
+    public GamePanel(Player player1, Deck deck) {
+        setLayout(null);
+        setBackground(new Color(0, 100, 0));
 
-        // Create components
+        // Username
+        JLabel userName = new JLabel(player1.getUsername());
+        userName.setForeground(Color.WHITE);
+        userName.setFont(new Font("Arial", Font.PLAIN, 24));
+        userName.setBounds(100, 10, 200, 30);
+        add(userName);
+
+        // Game Status Label
         gameStatusLabel = new JLabel("Game Status: In Progress");
-        gameStatusLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        gameStatusLabel.setForeground(Color.WHITE);
         gameStatusLabel.setFont(new Font("Arial", Font.BOLD, 24));
+        gameStatusLabel.setBounds(250, 0, 300, 50);
+        add(gameStatusLabel);
 
+        // Draw Card Button
+        ImageIcon drawIcon = new ImageIcon("Cards/b1fh.png");
+        drawCardButton = new JButton(drawIcon);
+        drawCardButton.setBounds(340, 50, 90, 65);
+        drawCardButton.addActionListener(this);
+        add(drawCardButton);
+
+        // End Turn Button
         endTurnButton = new JButton("End Turn");
+        endTurnButton.setBounds(0, 510, 800, 20);
+        endTurnButton.addActionListener(this);
+        add(endTurnButton);
 
-        // Create labels to display player name and hand
-        JLabel playerNameLabel = new JLabel("Player: " + player1.getUsername());
-        computerPlayerLabel = new JLabel("Computer");
+        // Player Hand Panel
+        playerHandPanel = new JPanel(new FlowLayout());
+        playerHandPanel.setOpaque(false);
+        playerHandPanel.setBounds(0, 350, 800, 100);
+        add(playerHandPanel);
 
-        // Create label to display player hand
-        JLabel playerHandLabel = new JLabel("Player's Hand: " + player1.getHand());
+        // Initial update for player hand
+        updatePlayerHand(player1.getHand().getCards(), deck);
 
-        // Add components to panel
-        add(gameStatusLabel, BorderLayout.NORTH);
-        add(playerNameLabel, BorderLayout.WEST);
-        add(computerPlayerLabel, BorderLayout.EAST);
-        add(playerHandLabel, BorderLayout.CENTER);
-        add(endTurnButton, BorderLayout.SOUTH);
+        // Computer Config
+        // Used for the computer Icon and match stack
+        ImageIcon cStackIcon = new ImageIcon("Cards/b1fv.png");
+        JLabel computerStack = new JLabel(cStackIcon);
+        computerStack.setBounds(new Rectangle(710, 110, 65, 90));
+
+        JLabel cCount = new JLabel("" + test);
+        cCount.setForeground(Color.YELLOW);
+        cCount.setFont(new Font("Arial", Font.PLAIN, 25));
+        cCount.setBounds(new Rectangle(725, 110, 65, 90));
+        add(cCount);
+
+        add(computerStack);
+
+
+        // Player Config
+        // used for the Player match stack, displayable cards
+        ImageIcon pStackIcon = new ImageIcon("Cards/b2fv.png");
+        JLabel playerStack = new JLabel(pStackIcon);
+        playerStack.setBounds(new Rectangle(0, 310, 65, 90));
+
+
+        JLabel pCount = new JLabel("" + test);
+        pCount.setForeground(Color.YELLOW);
+        pCount.setFont(new Font("Arial", Font.PLAIN, 25));
+        pCount.setBounds(new Rectangle(19, 310, 65, 90));
+
+        add(pCount);
+        add(playerStack);
+
+
     }
 
-    // Method to update the game status label
-    public void updateGameStatus(String status) {
-        gameStatusLabel.setText("Game Status: " + status);
+    public void updatePlayerHand(ArrayList<Card> hand, Deck deck) {
+        playerHandPanel.removeAll();
+        for (Card card : hand) {
+            ImageIcon icon = deck.getCardImage(card);
+            if (icon != null) {
+                JLabel cardLabel = new JLabel(icon);
+                playerHandPanel.add(cardLabel);
+            }
+        }
+        playerHandPanel.revalidate();
+        playerHandPanel.repaint();
     }
 
-    // Method to add action listener to the end turn button
+    @Override
+    public void actionPerformed(ActionEvent e) {
+
+    }
+
+    public void addDrawCardButtonListener(ActionListener listener) {
+        drawCardButton.addActionListener(listener);
+    }
+
     public void addEndTurnButtonListener(ActionListener listener) {
         endTurnButton.addActionListener(listener);
+    }
+
+    public void updateGameStatus(String status) {
+        gameStatusLabel.setText(status);
     }
 }

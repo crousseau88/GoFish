@@ -1,13 +1,16 @@
 package View;
 
 
+import Model.Deck;
+import Model.Player;
+
 import javax.swing.*;
 
 public class MainFrame extends JFrame {
     private InitialPanel ip;
     private GamePanel gamePanel;
 
-    public MainFrame(){
+    public MainFrame() {
         super("GUI Tester for GoFish!");
 
         // Create initial panel
@@ -23,9 +26,7 @@ public class MainFrame extends JFrame {
     public void showGamePanel() {
 
         getContentPane().remove(ip);
-
-
-        gamePanel = new GamePanel();
+        gamePanel = new GamePanel(new Player(), new Deck());
         getContentPane().add(gamePanel);
 
 
@@ -38,6 +39,9 @@ public class MainFrame extends JFrame {
     }
 
     public GamePanel getGamePanel() {
+        if (gamePanel == null) {
+            gamePanel = new GamePanel(new Player(), new Deck());
+        }
         return gamePanel;
     }
 }
