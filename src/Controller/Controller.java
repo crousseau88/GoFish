@@ -46,6 +46,20 @@ public class Controller {
 
     private void addGameListeners() {
 
+        JTextField userNameField = view.getTp().getUserNameField();
+        userNameField.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String username = userNameField.getText().trim();
+                if (!username.isEmpty()) {
+                    model.getPlayer().setUsername(username);
+                    System.out.println("Username set to: " + model.getPlayer().getUsername());
+                } else {
+                    System.out.println("No username entered");
+                }
+            }
+        });
+
         view.getTp().getTwoPairButton().addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 model.startGame();

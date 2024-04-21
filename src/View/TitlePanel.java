@@ -10,6 +10,7 @@ import java.awt.event.ActionListener;
 public class TitlePanel extends JPanel {
     private MainFrame mainFrame;
     private JButton twoPairButton, fourPairButton, rulesButton;
+    private JTextField userNameField;
 
     public TitlePanel(MainFrame mainFrame) {
         this.mainFrame = mainFrame;
@@ -45,11 +46,15 @@ public class TitlePanel extends JPanel {
         userAsk.setBounds(330, 380, 200, 30);
         add(userAsk);
 
-        JTextField userName = new JTextField(10);
-        userName.setBounds(new Rectangle(280, 410, 200, 30));
-        userName.setForeground(Color.GRAY);
-        add(userName);
+        userNameField = new JTextField(10);
+        userNameField.setBounds(new Rectangle(280, 410, 200, 30));
+        userNameField.setForeground(Color.GRAY);
+        add(userNameField);
     }
+    public JTextField getUserNameField() {
+        return userNameField;
+    }
+
 
     public JButton getTwoPairButton() {
         return twoPairButton;
