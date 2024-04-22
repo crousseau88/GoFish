@@ -9,6 +9,8 @@ public class Hand {
 
     public void addCard(Card card) {
         hand.add(card);
+        System.out.println("Added: " + card + " | Hand Size: " + getCardCount());
+
     }
 
     public void clear() {
@@ -31,7 +33,9 @@ public class Hand {
     }
 
     public boolean removeCard(Card card) {
-        return hand.remove(card);
+        boolean removed = hand.remove(card);
+        System.out.println("Removed: " + card + " | Hand Size: " + getCardCount() + " | Successful: " + removed);
+        return removed;
     }
 
     public int getCardCount() {

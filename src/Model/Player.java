@@ -9,7 +9,7 @@ public class Player {
     private Hand books = new Hand();
     //keep track of wins can write to file and rank players
     private int score;
-    private String username;
+    private String username = "Computer";
 
 
     // Constructor

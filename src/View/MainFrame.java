@@ -24,12 +24,13 @@ public class MainFrame extends JFrame {
 
 
     public void showGamePanel() {
-
         getContentPane().remove(ip);
-        gamePanel = new GamePanel(new Player(), new Deck());
+        String username = ip.getTp().getUserNameField().getText();
+        gamePanel = getGamePanel();
+        JLabel userNameLabel = (JLabel) gamePanel.getComponent(0);
+        userNameLabel.setText("Player: " + username);
+
         getContentPane().add(gamePanel);
-
-
         revalidate();
         repaint();
     }

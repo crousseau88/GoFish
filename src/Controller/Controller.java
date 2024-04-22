@@ -70,7 +70,7 @@ public class Controller {
         });
         view.getTp().getFourPairButton().addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                view.getMf().showGamePanel();
+                displayComingSoon();
             }
         });
 
@@ -79,7 +79,7 @@ public class Controller {
             @Override
             public void actionPerformed(ActionEvent e) {
                 System.out.println("Draw Card button clicked.");
-                model.drawCard();
+                model.drawCard(model.getPlayer());
                 ;
                 view.getMf().getGamePanel().updatePlayerHand(model.getPlayer().getHand().getCards(), model.getDeck());
                 view.getMf().getGamePanel().updateGameStatus("Card Drawn. Your turn continues.");
@@ -118,6 +118,29 @@ public class Controller {
             view.getMf().getGamePanel().updateGameStatus("Computer does not have the card of rank: " + rank);
 
         }
+    }
+
+    private void displayComingSoon() {
+        JFrame soonFrame = new JFrame("Coming Soon");
+        soonFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        soonFrame.setSize(400, 300);
+        soonFrame.setLocationRelativeTo(null);
+
+        JTextArea soonTextArea = new JTextArea();
+        soonTextArea.setEditable(false);
+        soonTextArea.setFont(new Font("Arial", Font.PLAIN, 14));
+        soonTextArea.setLineWrap(true);
+        soonTextArea.setWrapStyleWord(true);
+
+        String comingSoon = "This implementation is coming soon!\n" +
+                "If you would like to play exit this window and select 2 card. \n"+
+                "Thank you!";
+
+        soonTextArea.setText(comingSoon);
+        JScrollPane scrollPane = new JScrollPane(soonTextArea);
+        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+        soonFrame.add(scrollPane);
+        soonFrame.setVisible(true);
     }
 
     private void displayRules() {

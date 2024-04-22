@@ -21,12 +21,20 @@ public class GamePanel extends JPanel implements ActionListener {
         setLayout(null);
         setBackground(new Color(0, 100, 0));
 
+
         // Username
         JLabel userName = new JLabel(player1.getUsername());
         userName.setForeground(Color.WHITE);
-        userName.setFont(new Font("Arial", Font.PLAIN, 24));
-        userName.setBounds(100, 10, 200, 30);
+        userName.setFont(new Font("Arial", Font.PLAIN, 20));
+        userName.setBounds(0, 400, 200, 30);
         add(userName);
+
+        // Computer name label
+        JLabel computerName = new JLabel("Player: Computer");
+        computerName.setForeground(Color.WHITE);
+        computerName.setFont(new Font("Arial", Font.PLAIN, 20));
+        computerName.setBounds(630, 10, 200, 150);
+        add(computerName);
 
         // Game Status Label
         gameStatusLabel = new JLabel("Game Status: In Progress");
@@ -103,7 +111,7 @@ public class GamePanel extends JPanel implements ActionListener {
         }
         playerHandPanel.revalidate();
         playerHandPanel.repaint();
-        System.out.println("Player hand updated with " + hand.size() + " cards.");
+
     }
     private void cardClicked(String rank) {
         // Notify controller that a rank was clicked
