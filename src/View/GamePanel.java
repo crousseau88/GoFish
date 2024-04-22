@@ -103,8 +103,10 @@ public class GamePanel extends JPanel implements ActionListener {
         for (Card card : hand) {
             ImageIcon icon = deck.getCardImage(card);
             if (icon != null) {
-                JLabel cardLabel = new JLabel(icon);
-                playerHandPanel.add(cardLabel);
+                JButton cardButton = new JButton(icon);
+                cardButton.setActionCommand(card.getRank().toString());  // Set command to the card's rank
+                cardButton.addActionListener(e -> cardClicked(e.getActionCommand()));
+                playerHandPanel.add(cardButton);
             }
             playerHandPanel.revalidate();
             playerHandPanel.repaint();
