@@ -2,8 +2,6 @@ package Controller;
 
 import Model.Model;
 import View.View;
-import Model.Player;
-import View.GamePanel;
 import Model.Rank;
 
 import javax.swing.*;
@@ -11,7 +9,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class Controller {
+public class Controller{
     private Model model;
     private View view;
     private Rank rank;
@@ -19,6 +17,7 @@ public class Controller {
     public Controller(Model m, View v) {
         this.model = m;
         this.view = v;
+
 
         // Setup game initially
         setupGame();
@@ -39,10 +38,13 @@ public class Controller {
 
 
     private void updateGameView() {
-        view.getMf().getGamePanel().updatePlayerHand(model.getPlayer().getHand().getCards(), model.getDeck());
-        String turnStatus = model.isPlayerTurn() ? "Player's turn." : "Computer's turn.";
-        view.getMf().getGamePanel().updateGameStatus("Game Started: " + turnStatus);    }
-
+        SwingUtilities.invokeLater(() -> {
+            view.getMf().getGamePanel().updatePlayerHand(model.getPlayer().getHand().getCards(), model.getDeck());
+            String turnStatus = model.isPlayerTurn() ? "Player's turn." : "Computer's turn.";
+            view.getMf().getGamePanel().updateGameStatus("Game Started: " + turnStatus);
+            view.getMf().getGamePanel().repaint();
+        });
+    }
 
     private void addGameListeners() {
 
@@ -90,8 +92,11 @@ public class Controller {
             @Override
             public void actionPerformed(ActionEvent e) {
                 model.endTurn();
+                boolean updateNeeded = model.computerTurn();
+                if (updateNeeded) {
+                    updateView(); // Call this to update UI components
+                }
                 view.getMf().getGamePanel().updateGameStatus("End of Turn. It is now computer's turn.");
-
             }
         });
 
@@ -120,6 +125,7 @@ public class Controller {
         }
     }
 
+
     private void displayComingSoon() {
         JFrame soonFrame = new JFrame("Coming Soon");
         soonFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -141,6 +147,13 @@ public class Controller {
         scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
         soonFrame.add(scrollPane);
         soonFrame.setVisible(true);
+    }
+    private void updateView() {
+        SwingUtilities.invokeLater(() -> {
+            view.getMf().getGamePanel().updatePlayerHand(model.getPlayer().getHand().getCards(), model.getDeck());
+            String turnStatus = model.isPlayerTurn() ? "Player's turn." : "Computer's turn.";//check this line
+            view.getMf().getGamePanel().updateGameStatus("Game Started: " + turnStatus);
+        });
     }
 
     private void displayRules() {

@@ -1,5 +1,10 @@
 package Model;
 
+import Controller.Controller;
+
+import java.util.ArrayList;
+import java.util.List;
+
 public class Model {
     private Player player;
     private Player computer;
@@ -92,7 +97,7 @@ public class Model {
             Card drawnCard = deck.dealCard();
             player.addCardToHand(drawnCard);
             System.out.println("-----------------------------------------------");
-            System.out.println(player.getUsername() + " draws a " + drawnCard);
+            System.out.println(player.getUsername() + " draws a " + drawnCard);//check this line too printing computer when player draws
             System.out.println("-----------------------------------------------");
         }
     }
@@ -110,7 +115,7 @@ public class Model {
             System.out.println("-----------------------------------------------");
             System.out.println("Go Fish");
             System.out.println("-----------------------------------------------");
-            drawCard(player);  // Ensures the correct player is specified
+            drawCard(player);
         }
     }
 
@@ -123,11 +128,22 @@ public class Model {
     }
 
     public void toggleTurn() {
+        System.out.println("Before toggle: It is " + (isPlayerTurn ? "player's" : "computer's") + " turn.");
         isPlayerTurn = !isPlayerTurn;
+        System.out.println("After toggle: It is now " + (isPlayerTurn ? "player's" : "computer's") + " turn.");
+
     }
 
-    public void computerTurn() {
+
+    public void endTurn() {
+        isPlayerTurn = !isPlayerTurn;
+        System.out.println((isPlayerTurn ? "Player" : "Computer") + "'s turn.");
+
+    }
+
+    public boolean computerTurn() {
         boolean canPlay = false;
+        boolean updateHandPanel = false;
 
         Rank chosenRank = computer.chooseRankToAskFor();
         if (chosenRank != null) {
@@ -135,6 +151,7 @@ public class Model {
 
             if (receivedCard != null) {
                 computer.getHand().addCard(receivedCard);
+                updateHandPanel = true;
                 System.out.println("Computer received " + receivedCard + " from player.");
                 canPlay = computer.checkForAndAddPairs();
             }
@@ -151,10 +168,7 @@ public class Model {
             System.out.println("Computer has no moves left and ends its turn.");
         }
         toggleTurn();
-        if (isPlayerTurn) {
-            playerTurn();
-        }
-
+        return updateHandPanel;
     }
 
     public boolean isPlayerTurn() {
@@ -165,14 +179,9 @@ public class Model {
         return computer.hasRank(rank);
     }
 
-    public void setPlayerUsername(String username) {
-        player.setUsername(username);
-    }
-
     public boolean isGameOver() {
         return player.getHand().getCardCount() == 0 && computer.getHand().getCardCount() == 0;
     }
-
 
     public Player getComputer() {
         return computer;
@@ -194,11 +203,6 @@ public class Model {
         return player;
     }
 
-
-    public void endTurn() {
-        isPlayerTurn = !isPlayerTurn;
-        System.out.println((isPlayerTurn ? "Player" : "Computer") + "'s turn.");
-    }
 
     public String determineWinner() {
         if (player.getBookCount() > computer.getBookCount()) {

@@ -1,13 +1,15 @@
 package View;
 
-import Model.Player;
 import Model.Card;
 import Model.Deck;
+import Model.Player;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.util.ArrayList;
 
 public class GamePanel extends JPanel implements ActionListener {
@@ -15,26 +17,31 @@ public class GamePanel extends JPanel implements ActionListener {
     private JButton endTurnButton;
     private JButton drawCardButton;
     private JPanel playerHandPanel;
+    private JLabel computerStack;
+    private JLabel cCount;
+    private JLabel playerStack;
+    private JLabel pCount;
+    private JLabel userNameLabel;
+    private JLabel computerNameLabel;
     private int test = 10;
 
     public GamePanel(Player player1, Deck deck) {
         setLayout(null);
         setBackground(new Color(0, 100, 0));
 
-
         // Username
-        JLabel userName = new JLabel(player1.getUsername());
-        userName.setForeground(Color.WHITE);
-        userName.setFont(new Font("Arial", Font.PLAIN, 20));
-        userName.setBounds(0, 400, 200, 30);
-        add(userName);
+        userNameLabel = new JLabel(player1.getUsername());
+        userNameLabel.setForeground(Color.WHITE);
+        userNameLabel.setFont(new Font("Arial", Font.PLAIN, 20));
+        userNameLabel.setBounds(50, getHeight() - 100, 200, 30);
+        add(userNameLabel);
 
         // Computer name label
-        JLabel computerName = new JLabel("Player: Computer");
-        computerName.setForeground(Color.WHITE);
-        computerName.setFont(new Font("Arial", Font.PLAIN, 20));
-        computerName.setBounds(630, 10, 200, 150);
-        add(computerName);
+        computerNameLabel = new JLabel("Player: Computer");
+        computerNameLabel.setForeground(Color.WHITE);
+        computerNameLabel.setFont(new Font("Arial", Font.PLAIN, 20));
+        computerNameLabel.setBounds(getWidth() - 250, 50, 200, 30);
+        add(computerNameLabel);
 
         // Game Status Label
         gameStatusLabel = new JLabel("Game Status: In Progress");
@@ -67,35 +74,60 @@ public class GamePanel extends JPanel implements ActionListener {
 
         // Computer Config
         // Used for the computer Icon and match stack
-        ImageIcon cStackIcon = new ImageIcon("Cards/b1fv.png");
-        JLabel computerStack = new JLabel(cStackIcon);
-        computerStack.setBounds(new Rectangle(710, 110, 65, 90));
 
-        JLabel cCount = new JLabel("" + test);
+        cCount = new JLabel("" + test);
         cCount.setForeground(Color.YELLOW);
         cCount.setFont(new Font("Arial", Font.PLAIN, 25));
-        cCount.setBounds(new Rectangle(725, 110, 65, 90));
         add(cCount);
 
+        ImageIcon cStackIcon = new ImageIcon("Cards/b1fv.png");
+        computerStack = new JLabel(cStackIcon);
         add(computerStack);
-
 
         // Player Config
         // used for the Player match stack, displayable cards
-        ImageIcon pStackIcon = new ImageIcon("Cards/b2fv.png");
-        JLabel playerStack = new JLabel(pStackIcon);
-        playerStack.setBounds(new Rectangle(0, 310, 65, 90));
 
-
-        JLabel pCount = new JLabel("" + test);
+        pCount = new JLabel("" + test);
         pCount.setForeground(Color.YELLOW);
         pCount.setFont(new Font("Arial", Font.PLAIN, 25));
-        pCount.setBounds(new Rectangle(19, 310, 65, 90));
-
         add(pCount);
+
+        ImageIcon pStackIcon = new ImageIcon("Cards/b2fv.png");
+        playerStack = new JLabel(pStackIcon);
         add(playerStack);
 
+        // Add a component listener to adjust component bounds on resize
+        addComponentListener(new ComponentAdapter() {
+            @Override
+            public void componentResized(ComponentEvent e) {
+                adjustComponentBounds();
+            }
+        });
+    }
 
+    public void updatePlayerName(String username) {
+        JLabel userNameLabel = (JLabel) getComponent(0);
+        userNameLabel.setText("Player: " + username);
+    }
+
+    private void adjustComponentBounds() {
+        // Adjust the bounds of components based on the panel size
+        Dimension size = getSize();
+        gameStatusLabel.setBounds((size.width - 300) / 2, 0, 300, 50);
+        drawCardButton.setBounds(size.width / 2 - 45, size.height - 160, 90, 65);
+        endTurnButton.setBounds(0, size.height - 90, size.width -30, 20);
+        playerHandPanel.setBounds(0, size.height - 300, size.width, 100);
+        // Computer Config
+        cCount.setBounds(size.width - 75, 10, 65, 90);
+        computerStack.setBounds(size.width - 90, 10, 65, 90);
+        computerStack.setOpaque(true);
+
+        // Player Config
+        playerStack.setBounds(2, getHeight()-250, 65, 90);
+        pCount.setBounds(16, getHeight()-250,65 , 90);
+        // Adjust the bounds of the userNameLabel and computerNameLabel
+        userNameLabel.setBounds(0, getHeight() - 150, 200, 30);
+        computerNameLabel.setBounds(getWidth() - 250, 50, 200, 30);
     }
 
     public void updatePlayerHand(ArrayList<Card> hand, Deck deck) {
@@ -108,23 +140,20 @@ public class GamePanel extends JPanel implements ActionListener {
                 cardButton.addActionListener(e -> cardClicked(e.getActionCommand()));
                 playerHandPanel.add(cardButton);
             }
-            playerHandPanel.revalidate();
-            playerHandPanel.repaint();
         }
         playerHandPanel.revalidate();
         playerHandPanel.repaint();
-
+        System.out.println("Player hand updated with " + hand.size() + " cards.");
     }
+
     private void cardClicked(String rank) {
         // Notify controller that a rank was clicked
         firePropertyChange("cardClicked", "", rank);
     }
 
-
-
     @Override
     public void actionPerformed(ActionEvent e) {
-
+        // Handle button actions
     }
 
     public void addDrawCardButtonListener(ActionListener listener) {
@@ -138,4 +167,5 @@ public class GamePanel extends JPanel implements ActionListener {
     public void updateGameStatus(String status) {
         gameStatusLabel.setText(status);
     }
+
 }
