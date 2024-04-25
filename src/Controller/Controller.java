@@ -27,17 +27,25 @@ public class Controller{
         }
     }
 
-    private void setupGame() {
-
-        view.getMf().getGamePanel().updatePlayerHand(model.getPlayer().getHand().getCards(), model.getDeck());
+    // method to get book count
+    private void displayBookCount() {
+        int playerBookCount = model.getPlayer().getBookCount();
+        int computerBookCount = model.getComputer().getBookCount();
+        SwingUtilities.invokeLater(() -> {
+            view.getMf().getGamePanel().setCompCount(computerBookCount);
+            view.getMf().getGamePanel().setPlayerCount(playerBookCount);
+            view.getMf().getGamePanel().revalidate();
+            view.getMf().getGamePanel().repaint();
+        });
     }
-    private void initializeGame() {
-        model.startGame(); // Shuffles deck, deals cards, checks initial pairs
+    private void setupGame() {
+        view.getMf().getGamePanel().updatePlayerHand(model.getPlayer().getHand().getCards(), model.getDeck());
         updateGameView();
     }
 
 
     private void updateGameView() {
+        displayBookCount();
         SwingUtilities.invokeLater(() -> {
             view.getMf().getGamePanel().updatePlayerHand(model.getPlayer().getHand().getCards(), model.getDeck());
             String turnStatus = model.isPlayerTurn() ? "Player's turn." : "Computer's turn.";
@@ -47,7 +55,7 @@ public class Controller{
     }
 
     private void addGameListeners() {
-
+    setupCardClickListeners();
         JTextField userNameField = view.getTp().getUserNameField();
         userNameField.addActionListener(new ActionListener() {
             @Override
@@ -110,6 +118,8 @@ public class Controller{
     private void setupCardClickListeners() {
         view.getMf().getGamePanel().addPropertyChangeListener("cardClicked", evt -> {
             handleCardRequest((String) evt.getNewValue());
+            view.getMf().getGamePanel().revalidate();
+            view.getMf().getGamePanel().repaint();
         });
     }
 
@@ -118,10 +128,13 @@ public class Controller{
         boolean hasCard = model.askComputerForRank(requestedRank);
         if (hasCard) {
             view.getMf().getGamePanel().updateGameStatus("Computer has the card of rank: " + rank);
+            view.getMf().getGamePanel().revalidate();
+            view.getMf().getGamePanel().repaint();
 
         } else {
             view.getMf().getGamePanel().updateGameStatus("Computer does not have the card of rank: " + rank);
-
+            view.getMf().getGamePanel().revalidate();
+            view.getMf().getGamePanel().repaint();
         }
     }
 
@@ -149,6 +162,7 @@ public class Controller{
         soonFrame.setVisible(true);
     }
     private void updateView() {
+
         SwingUtilities.invokeLater(() -> {
             view.getMf().getGamePanel().updatePlayerHand(model.getPlayer().getHand().getCards(), model.getDeck());
             String turnStatus = model.isPlayerTurn() ? "Player's turn." : "Computer's turn.";//check this line

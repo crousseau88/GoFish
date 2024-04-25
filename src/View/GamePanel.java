@@ -17,13 +17,14 @@ public class GamePanel extends JPanel implements ActionListener {
     private JButton endTurnButton;
     private JButton drawCardButton;
     private JPanel playerHandPanel;
-    private JLabel computerStack;
     private JLabel cCount;
-    private JLabel playerStack;
+    private JLabel computerStack;
     private JLabel pCount;
+    private JLabel playerStack;
     private JLabel userNameLabel;
     private JLabel computerNameLabel;
-    private int test = 10;
+    private int playerCount;
+    private int compCount;
 
     public GamePanel(Player player1, Deck deck) {
         setLayout(null);
@@ -46,14 +47,13 @@ public class GamePanel extends JPanel implements ActionListener {
         // Game Status Label
         gameStatusLabel = new JLabel("Game Status: In Progress");
         gameStatusLabel.setForeground(Color.WHITE);
-        gameStatusLabel.setFont(new Font("Arial", Font.BOLD, 24));
-        gameStatusLabel.setBounds(250, 0, 300, 50);
+        gameStatusLabel.setFont(new Font("Arial", Font.BOLD, 20));
         add(gameStatusLabel);
 
         // Draw Card Button
         ImageIcon drawIcon = new ImageIcon("Cards/b1fh.png");
         drawCardButton = new JButton(drawIcon);
-        drawCardButton.setBounds(340, 50, 90, 65);
+
         drawCardButton.addActionListener(this);
         add(drawCardButton);
 
@@ -72,29 +72,32 @@ public class GamePanel extends JPanel implements ActionListener {
         // Initial update for player hand
         updatePlayerHand(player1.getHand().getCards(), deck);
 
+
+        cCount = new JLabel("" + compCount);
+        cCount.setForeground(Color.YELLOW);
+        cCount.setFont(new Font("Arial", Font.BOLD, 20));
+        add(cCount);
         // Computer Config
         // Used for the computer Icon and match stack
-
-        cCount = new JLabel("" + test);
-        cCount.setForeground(Color.YELLOW);
-        cCount.setFont(new Font("Arial", Font.PLAIN, 25));
-        add(cCount);
 
         ImageIcon cStackIcon = new ImageIcon("Cards/b1fv.png");
         computerStack = new JLabel(cStackIcon);
         add(computerStack);
 
+
+        pCount = new JLabel("" + playerCount);
+        pCount.setForeground(Color.YELLOW);
+        pCount.setFont(new Font("Arial", Font.BOLD, 20));
+        add(pCount);
+        revalidate();
+        repaint();
         // Player Config
         // used for the Player match stack, displayable cards
-
-        pCount = new JLabel("" + test);
-        pCount.setForeground(Color.YELLOW);
-        pCount.setFont(new Font("Arial", Font.PLAIN, 25));
-        add(pCount);
-
         ImageIcon pStackIcon = new ImageIcon("Cards/b2fv.png");
         playerStack = new JLabel(pStackIcon);
         add(playerStack);
+
+
 
         // Add a component listener to adjust component bounds on resize
         addComponentListener(new ComponentAdapter() {
@@ -110,21 +113,22 @@ public class GamePanel extends JPanel implements ActionListener {
         userNameLabel.setText("Player: " + username);
     }
 
+
     private void adjustComponentBounds() {
         // Adjust the bounds of components based on the panel size
         Dimension size = getSize();
-        gameStatusLabel.setBounds((size.width - 300) / 2, 0, 300, 50);
-        drawCardButton.setBounds(size.width / 2 - 45, size.height - 160, 90, 65);
+        gameStatusLabel.setBounds((size.width - 300) / 2, 0, 600, 50);
+        drawCardButton.setBounds(size.width / 2 - 45, size.height - 460, 90, 65);
         endTurnButton.setBounds(0, size.height - 90, size.width -30, 20);
         playerHandPanel.setBounds(0, size.height - 300, size.width, 100);
         // Computer Config
-        cCount.setBounds(size.width - 75, 10, 65, 90);
+        cCount.setBounds(size.width - 70, 10, 65, 90);
         computerStack.setBounds(size.width - 90, 10, 65, 90);
         computerStack.setOpaque(true);
 
         // Player Config
         playerStack.setBounds(2, getHeight()-250, 65, 90);
-        pCount.setBounds(16, getHeight()-250,65 , 90);
+        pCount.setBounds(19, getHeight()-250,65 , 90);
         // Adjust the bounds of the userNameLabel and computerNameLabel
         userNameLabel.setBounds(0, getHeight() - 150, 200, 30);
         computerNameLabel.setBounds(getWidth() - 250, 50, 200, 30);
@@ -168,4 +172,13 @@ public class GamePanel extends JPanel implements ActionListener {
         gameStatusLabel.setText(status);
     }
 
+
+    public void setPlayerCount(int playerCount) {
+        this.playerCount = playerCount;
+
+    }
+
+    public void setCompCount(int compCount) {
+        this.compCount = compCount;
+    }
 }
