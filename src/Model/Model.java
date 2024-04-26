@@ -63,7 +63,7 @@ public class Model {
     }
 
     //checks for book pairs not currently working as designed need to ts
-    private void checkForPairs() {
+    public void checkForPairs() {
         boolean playerFoundPair = player.checkForAndAddPairs();
         boolean computerFoundPair = computer.checkForAndAddPairs();
 
@@ -122,7 +122,7 @@ public class Model {
     public void playerTurn() {
         checkForPairs();
         if (!player.checkForAndAddPairs()) {
-            askForCardFromComputer();
+//            askForCardFromComputer();
         }
 
     }
@@ -133,6 +133,7 @@ public class Model {
         System.out.println("After toggle: It is now " + (isPlayerTurn ? "player's" : "computer's") + " turn.");
 
     }
+
 
 
     public void endTurn() {
@@ -165,13 +166,17 @@ public class Model {
         }
 
         if (!canPlay) {
+            computer.checkForAndAddPairs();
             System.out.println("Computer has no moves left and ends its turn.");
         }
+        computer.checkForAndAddPairs();
+        System.out.println("Computers book count is: " + computer.getBookCount());
         toggleTurn();
         return updateHandPanel;
     }
 
     public boolean isPlayerTurn() {
+        checkForPairs();
         return isPlayerTurn;
     }
 

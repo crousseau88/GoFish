@@ -3,6 +3,7 @@ package Controller;
 import Model.Model;
 import View.View;
 import Model.Rank;
+import Model.Card;
 
 import javax.swing.*;
 import java.awt.*;
@@ -127,15 +128,23 @@ public class Controller{
         Rank requestedRank = Rank.valueOf(rank);
         boolean hasCard = model.askComputerForRank(requestedRank);
         if (hasCard) {
+            Card cardRecieved = model.getComputer().giveCard(requestedRank);
             view.getMf().getGamePanel().updateGameStatus("Computer has the card of rank: " + rank);
-            view.getMf().getGamePanel().revalidate();
-            view.getMf().getGamePanel().repaint();
+            model.getPlayer().addCardToHand(cardRecieved);
+            model.checkForPairs();
+            updateView();
+            displayMatchFound();
+
 
         } else {
             view.getMf().getGamePanel().updateGameStatus("Computer does not have the card of rank: " + rank);
-            view.getMf().getGamePanel().revalidate();
-            view.getMf().getGamePanel().repaint();
+
         }
+
+//        view.getMf().getGamePanel().revalidate();
+//        view.getMf().getGamePanel().repaint();
+//        updateView();//updates the game view so the matches are removed from visible hand
+
     }
 
 
@@ -170,6 +179,27 @@ public class Controller{
         });
     }
 
+
+    private void displayMatchFound(){
+        JFrame matchFrame = new JFrame("Match Found");
+        matchFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        matchFrame.setSize(400, 300);
+        matchFrame.setLocationRelativeTo(null);
+
+        JTextArea matchTextArea = new JTextArea();
+        matchTextArea.setEditable(false);
+        matchTextArea.setFont(new Font("Arial", Font.PLAIN, 14));
+        matchTextArea.setLineWrap(true);
+        matchTextArea.setWrapStyleWord(true);
+
+        String matchText = "Match Found and added to book\n" + "Your book count is: " + model.getPlayer().getBookCount();
+
+        matchTextArea.setText(matchText);
+        JScrollPane scrollPane = new JScrollPane(matchTextArea);
+        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+        matchFrame.add(scrollPane);
+        matchFrame.setVisible(true);
+    }
     private void displayRules() {
         JFrame rulesFrame = new JFrame("Go Fish Rules");
         rulesFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
