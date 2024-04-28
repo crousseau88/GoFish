@@ -13,7 +13,7 @@ import java.awt.event.ActionListener;
 public class Controller{
     private Model model;
     private View view;
-    private Rank rank;
+
 
     public Controller(Model m, View v) {
         this.model = m;
@@ -23,8 +23,8 @@ public class Controller{
         // Setup game initially
         setupGame();
         addGameListeners();
-        if (this.view == null || this.view.getMf().getGamePanel() == null) {
-            throw new IllegalStateException("View or GamePanel not initialized.");
+        if (this.view.getMf().getGamePanel() == null) {
+            throw new IllegalStateException("GamePanel not initialized.");
         }
     }
 
@@ -38,21 +38,28 @@ public class Controller{
             view.getMf().getGamePanel().revalidate();
             view.getMf().getGamePanel().repaint();
         });
+
     }
     private void setupGame() {
         view.getMf().getGamePanel().updatePlayerHand(model.getPlayer().getHand().getCards(), model.getDeck());
+        model.getPlayer().checkForAndAddPairs();
+        model.getComputer().checkForAndAddPairs();
         updateGameView();
     }
 
 
     private void updateGameView() {
         displayBookCount();
+        model.getPlayer().checkForAndAddPairs();
+        model.getComputer().checkForAndAddPairs();
         SwingUtilities.invokeLater(() -> {
             view.getMf().getGamePanel().updatePlayerHand(model.getPlayer().getHand().getCards(), model.getDeck());
             String turnStatus = model.isPlayerTurn() ? "Player's turn." : "Computer's turn.";
             view.getMf().getGamePanel().updateGameStatus("Game Started: " + turnStatus);
+            view.getMf().getGamePanel().revalidate();
             view.getMf().getGamePanel().repaint();
         });
+
     }
 
     private void addGameListeners() {
@@ -91,7 +98,7 @@ public class Controller{
             public void actionPerformed(ActionEvent e) {
                 System.out.println("Draw Card button clicked.");
                 model.drawCard(model.getPlayer());
-                ;
+                model.getPlayer().checkForAndAddPairs();
                 view.getMf().getGamePanel().updatePlayerHand(model.getPlayer().getHand().getCards(), model.getDeck());
                 view.getMf().getGamePanel().updateGameStatus("Card Drawn. Your turn continues.");
             }
@@ -100,12 +107,15 @@ public class Controller{
         view.getMf().getGamePanel().addEndTurnButtonListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                model.getPlayer().checkForAndAddPairs();
                 model.endTurn();
                 boolean updateNeeded = model.computerTurn();
                 if (updateNeeded) {
                     updateView(); // Call this to update UI components
                 }
                 view.getMf().getGamePanel().updateGameStatus("End of Turn. It is now computer's turn.");
+                view.getMf().getGamePanel().revalidate();
+                view.getMf().getGamePanel().repaint();
             }
         });
 
@@ -132,6 +142,7 @@ public class Controller{
             view.getMf().getGamePanel().updateGameStatus("Computer has the card of rank: " + rank);
             model.getPlayer().addCardToHand(cardRecieved);
             model.checkForPairs();
+            model.toggleTurn();
             updateView();
             displayMatchFound();
 
@@ -189,10 +200,12 @@ public class Controller{
         JTextArea matchTextArea = new JTextArea();
         matchTextArea.setEditable(false);
         matchTextArea.setFont(new Font("Arial", Font.PLAIN, 14));
+        matchTextArea.setBackground(new Color(0, 100, 0));
         matchTextArea.setLineWrap(true);
         matchTextArea.setWrapStyleWord(true);
 
-        String matchText = "Match Found and added to book\n" + "Your book count is: " + model.getPlayer().getBookCount();
+        String matchText = "Match Found and added to book\n" + "Your book count is: " + model.getPlayer().getBookCount()
+                + "\n Computers book count: " + model.getComputer().getBookCount();
 
         matchTextArea.setText(matchText);
         JScrollPane scrollPane = new JScrollPane(matchTextArea);

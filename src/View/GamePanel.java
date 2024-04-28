@@ -144,9 +144,9 @@ public class GamePanel extends JPanel implements ActionListener {
                 cardButton.addActionListener(e -> cardClicked(e.getActionCommand()));
                 playerHandPanel.add(cardButton);
             }
+            playerHandPanel.revalidate();
+            playerHandPanel.repaint();
         }
-        playerHandPanel.revalidate();
-        playerHandPanel.repaint();
         System.out.println("Player hand updated with " + hand.size() + " cards.");
     }
 

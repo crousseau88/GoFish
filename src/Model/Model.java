@@ -121,9 +121,6 @@ public class Model {
 
     public void playerTurn() {
         checkForPairs();
-        if (!player.checkForAndAddPairs()) {
-//            askForCardFromComputer();
-        }
 
     }
 
@@ -149,7 +146,6 @@ public class Model {
         Rank chosenRank = computer.chooseRankToAskFor();
         if (chosenRank != null) {
             Card receivedCard = computer.askForCard(player, chosenRank);
-
             if (receivedCard != null) {
                 computer.getHand().addCard(receivedCard);
                 updateHandPanel = true;
@@ -168,12 +164,16 @@ public class Model {
         if (!canPlay) {
             computer.checkForAndAddPairs();
             System.out.println("Computer has no moves left and ends its turn.");
+            endTurn();
+            updateHandPanel = true;
         }
+
         computer.checkForAndAddPairs();
-        System.out.println("Computers book count is: " + computer.getBookCount());
+        System.out.println("Computer's book count is: " + computer.getBookCount());
         toggleTurn();
         return updateHandPanel;
     }
+
 
     public boolean isPlayerTurn() {
         checkForPairs();
