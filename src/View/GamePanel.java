@@ -23,8 +23,8 @@ public class GamePanel extends JPanel implements ActionListener {
     private JLabel playerStack;
     private JLabel userNameLabel;
     private JLabel computerNameLabel;
-    private int playerCount;
-    private int compCount;
+    private int playerCount = 0;
+    private int compCount = 0;
 
     public GamePanel(Player player1, Deck deck) {
         setLayout(null);
@@ -175,10 +175,13 @@ public class GamePanel extends JPanel implements ActionListener {
 
     public void setPlayerCount(int playerCount) {
         this.playerCount = playerCount;
-
+        pCount.setText(String.valueOf(playerCount));
+        pCount.repaint();
     }
 
     public void setCompCount(int compCount) {
         this.compCount = compCount;
+        cCount.setText(String.valueOf(compCount));
+        cCount.repaint();
     }
 }

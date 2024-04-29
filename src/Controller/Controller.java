@@ -30,16 +30,14 @@ public class Controller{
 
     // method to get book count
     private void displayBookCount() {
-        int playerBookCount = model.getPlayer().getBookCount();
-        int computerBookCount = model.getComputer().getBookCount();
         SwingUtilities.invokeLater(() -> {
-            view.getMf().getGamePanel().setCompCount(computerBookCount);
-            view.getMf().getGamePanel().setPlayerCount(playerBookCount);
+            view.getMf().getGamePanel().setCompCount(model.getComputer().getBookCount());
+            view.getMf().getGamePanel().setPlayerCount(model.getPlayer().getBookCount());
             view.getMf().getGamePanel().revalidate();
             view.getMf().getGamePanel().repaint();
         });
-
     }
+
     private void setupGame() {
         view.getMf().getGamePanel().updatePlayerHand(model.getPlayer().getHand().getCards(), model.getDeck());
         model.getPlayer().checkForAndAddPairs();
@@ -49,13 +47,13 @@ public class Controller{
 
 
     private void updateGameView() {
-        displayBookCount();
-        model.getPlayer().checkForAndAddPairs();
+        displayBookCount(); // Updates the book counts
+        model.getPlayer().checkForAndAddPairs(); // Checks pairs for both players
         model.getComputer().checkForAndAddPairs();
-        SwingUtilities.invokeLater(() -> {
+        SwingUtilities.invokeLater(() -> { //updates the game status and repaints
             view.getMf().getGamePanel().updatePlayerHand(model.getPlayer().getHand().getCards(), model.getDeck());
             String turnStatus = model.isPlayerTurn() ? "Player's turn." : "Computer's turn.";
-            view.getMf().getGamePanel().updateGameStatus("Game Started: " + turnStatus);
+            view.getMf().getGamePanel().updateGameStatus("It is: " + turnStatus);
             view.getMf().getGamePanel().revalidate();
             view.getMf().getGamePanel().repaint();
         });
@@ -107,15 +105,15 @@ public class Controller{
         view.getMf().getGamePanel().addEndTurnButtonListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                model.getPlayer().checkForAndAddPairs();
+                // Player manually ends their turn
                 model.endTurn();
-                boolean updateNeeded = model.computerTurn();
-                if (updateNeeded) {
-                    updateView(); // Call this to update UI components
+                // computer automatically takes its turn
+                boolean uiNeedsUpdate = model.computerTurn();
+                if (uiNeedsUpdate) {
+                    updateGameView();  // UI updates  after the computer's turn
                 }
-                view.getMf().getGamePanel().updateGameStatus("End of Turn. It is now computer's turn.");
-                view.getMf().getGamePanel().revalidate();
-                view.getMf().getGamePanel().repaint();
+                // Players turn againg
+                view.getMf().getGamePanel().updateGameStatus("Player's turn.");
             }
         });
 
@@ -152,9 +150,6 @@ public class Controller{
 
         }
 
-//        view.getMf().getGamePanel().revalidate();
-//        view.getMf().getGamePanel().repaint();
-//        updateView();//updates the game view so the matches are removed from visible hand
 
     }
 
@@ -182,11 +177,31 @@ public class Controller{
         soonFrame.setVisible(true);
     }
     private void updateView() {
+        if(model.getPlayer().getHand().getCardCount() == 0 && model.getComputer().getHand().getCardCount() ==0) {
+            JFrame winFrame = new JFrame("Game Over");
+            winFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+            winFrame.setSize(400, 300);
+            winFrame.setLocationRelativeTo(null);
+
+            JTextArea winTextArea = new JTextArea();
+            winTextArea.setEditable(false);
+            winTextArea.setFont(new Font("Arial", Font.PLAIN, 14));
+            winTextArea.setBackground(new Color(0, 100, 0));
+            winTextArea.setLineWrap(true);
+            winTextArea.setWrapStyleWord(true);
+
+            String winText = "Game over\n" + "Your book count is: " + model.getPlayer().getBookCount()
+                    + "\n Computers book count: " + model.getComputer().getBookCount() + "\n" +
+                    model.determineWinner();
+
+
+        }
 
         SwingUtilities.invokeLater(() -> {
             view.getMf().getGamePanel().updatePlayerHand(model.getPlayer().getHand().getCards(), model.getDeck());
             String turnStatus = model.isPlayerTurn() ? "Player's turn." : "Computer's turn.";//check this line
             view.getMf().getGamePanel().updateGameStatus("Game Started: " + turnStatus);
+
         });
     }
 
@@ -205,7 +220,7 @@ public class Controller{
         matchTextArea.setWrapStyleWord(true);
 
         String matchText = "Match Found and added to book\n" + "Your book count is: " + model.getPlayer().getBookCount()
-                + "\n Computers book count: " + model.getComputer().getBookCount();
+                + "\n Computers book count: " + model.getComputer().getBookCount() + " Computers hand count: " + model.getComputer().getHand().getCards().size();
 
         matchTextArea.setText(matchText);
         JScrollPane scrollPane = new JScrollPane(matchTextArea);
