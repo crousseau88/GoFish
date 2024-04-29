@@ -2,6 +2,7 @@ package Model;
 
 import java.awt.*;
 import java.util.Objects;
+//TODO add comments / javadoc to code
 
 public class Card {
     //Instance variables

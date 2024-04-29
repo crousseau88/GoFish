@@ -1,6 +1,7 @@
 package Model;
 
 import java.util.ArrayList;
+//TODO add comments / javadoc to code
 
 public class Hand {
     private ArrayList<Card> hand = new ArrayList<>();

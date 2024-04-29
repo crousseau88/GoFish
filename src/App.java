@@ -11,3 +11,6 @@ public class App {
 
     }
 }
+//TODO add comments / javadoc to code
+//TODO fix GUI updates within game panel so accurate information is displayed
+//TODO test logic

@@ -9,6 +9,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+//TODO add comments / javadoc to code
 
 public class Controller{
     private Model model;

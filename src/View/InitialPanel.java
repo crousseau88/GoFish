@@ -2,6 +2,7 @@ package View;
 
 import javax.swing.*;
 import java.awt.*;
+//TODO add comments / javadoc to code
 
 public class InitialPanel extends JPanel {
     private TitlePanel tp;

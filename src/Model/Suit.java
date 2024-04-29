@@ -1,4 +1,5 @@
 package Model;
+//TODO add comments / javadoc to code
 
 public enum Suit {
      SPADES("Spades"), HEARTS("Hearts"),  DIAMONDS("Diamonds"), CLUBS("Clubs");

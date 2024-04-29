@@ -1,9 +1,6 @@
 package Model;
 
-import Controller.Controller;
-
-import java.util.ArrayList;
-import java.util.List;
+//TODO add comments / javadoc to code
 
 public class Model {
     private Player player;
@@ -142,29 +139,28 @@ public class Model {
     public boolean computerTurn() {
         boolean uiNeedsUpdate = false;
 
-        // Attempt to get a card from the player first
+        // Attempt to get a card from the player
         while (true) {
             Rank chosenRank = computer.chooseRankToAskFor();
             if (chosenRank != null) {
                 Card receivedCard = computer.askForCard(player, chosenRank);
                 if (receivedCard != null) {
                     computer.getHand().addCard(receivedCard);
-                    uiNeedsUpdate = true;  // Update the UI because the game state changed
+                    uiNeedsUpdate = true;  //game state change
                     if (!computer.checkForAndAddPairs()) {
-                        // If no pairs formed, break out and draw from the deck
+                        // if no pairs formed, break out and draw from the deck
                         break;
                     }
                 } else {
-                    // If the computer did not receive the card, it needs to draw
+                   //breaks out in order to draw a new card
                     break;
                 }
             } else {
-                // No more ranks to ask for, break the loop
+                // no more cards to ask for so breaks
                 break;
             }
         }
-
-        // Draw a card from the deck if no more moves or failed to get a card
+        //draws from the deck
         if (!deck.isDeckEmpty()) {
             Card drawnCard = deck.dealCard();
             computer.getHand().addCard(drawnCard);
@@ -172,7 +168,7 @@ public class Model {
             computer.checkForAndAddPairs();
         }
 
-        // End the computer's turn
+        // end the computer's turn
         endTurn();
         toggleTurn();
 

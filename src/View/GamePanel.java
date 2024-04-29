@@ -11,6 +11,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.util.ArrayList;
+//TODO add comments / javadoc to code
 
 public class GamePanel extends JPanel implements ActionListener {
     private JLabel gameStatusLabel;

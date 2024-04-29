@@ -5,6 +5,7 @@ import Model.Deck;
 import Model.Player;
 
 import javax.swing.*;
+//TODO add comments / javadoc to code
 
 public class MainFrame extends JFrame {
     private InitialPanel ip;

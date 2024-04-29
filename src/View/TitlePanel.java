@@ -10,6 +10,7 @@ public class TitlePanel extends JPanel {
     private JButton twoPairButton, fourPairButton, rulesButton;
     private JTextField userNameField;
     private JLabel title, logo, userAsk;
+//TODO add comments / javadoc to code
 
     public TitlePanel(MainFrame mainFrame) {
         this.mainFrame = mainFrame;

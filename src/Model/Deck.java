@@ -3,6 +3,7 @@ package Model;
 import javax.swing.*;
 import java.util.ArrayList;
 import java.util.Collections;
+//TODO add comments / javadoc to code
 
 public class Deck {
     private ArrayList<Card> deck = new ArrayList<>();

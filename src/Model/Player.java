@@ -1,6 +1,7 @@
 package Model;
 
 import java.util.*;
+//TODO add comments / javadoc to code
 
 public class Player {
 

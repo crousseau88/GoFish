@@ -1,4 +1,5 @@
 package View;
+//TODO add comments / javadoc to code
 
 public class View {
     private MainFrame mf;
