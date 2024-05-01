@@ -24,22 +24,6 @@ public class Model {
         deck.shuffleDeck();
         dealInitialCards();
         checkForPairs();
-//        isPlayerTurn = true;
-//        playTurn();
-
-        //currently unused console debug statements
-//        System.out.println("Live Player hand: " + player.getHand().toString());//prints hand for player1
-//        System.out.println("Computer hand: " + computer.getHand().toString());//prints hand for computer
-//        System.out.println("-----------------------------------------------");
-//        System.out.println("Live Player book count: " + player.getBookCount());
-//        System.out.println("Computer book count: " + computer.getBookCount());
-//        System.out.println("-----------------------------------------------");
-//        System.out.println("Live Player hand: " + player.getHand().toString());//prints hand for player1
-//        System.out.println("Computer hand: " + computer.getHand().toString());//prints hand for computer
-//        System.out.println("-----------------------------------------------");
-//        System.out.println("Username:" + player.getUsername());
-//        System.out.println("-----------------------------------------------");
-
     }
 
 
@@ -90,13 +74,14 @@ public class Model {
         }
     }
 
+    //method to ask computer for a card
     private void askForCardFromComputer() {
         Rank requestedRank = player.chooseRankToAskFor();
         Card receivedCard = computer.giveCard(requestedRank);
         if (receivedCard != null) {
             player.addCardToHand(receivedCard);
             System.out.println("-----------------------------------------------");
-            System.out.println("Player received " + receivedCard + " from computer.");
+            System.out.println("Player received " + receivedCard + " from computer.");//debug statements
             System.out.println("-----------------------------------------------");
             checkForPairs();
         } else {
@@ -106,11 +91,6 @@ public class Model {
             drawCard(player);
         }
     }
-
-//    public void playerTurn() {
-//        checkForPairs();
-//
-//    }
 
     public void toggleTurn() {
         System.out.println("Before toggle: It is " + (isPlayerTurn ? "player's" : "computer's") + " turn.");
@@ -123,7 +103,8 @@ public class Model {
 
     public void endTurn() {
         isPlayerTurn = !isPlayerTurn;
-        System.out.println("Turn Ended, it is now " + (isPlayerTurn ? "Player" : "Computer") + "'s turn.");
+        System.out.println("Turn Ended, it is now " +
+                (isPlayerTurn ? "Player" : "Computer") + "'s turn."); //uses ternary operator in place of if/else
 
     }
 
@@ -200,10 +181,11 @@ public class Model {
         return player;
     }
 
-
+    //method to determine winner of the game
     public String determineWinner() {
         if (player.getHand().getCardCount() == 0 && computer.getHand().getCardCount() == 0) {
-            return "Game over. " + (player.getBookCount() > computer.getBookCount() ? "Player wins!" : "Computer wins!");
+            return "Game over. " + (player.getBookCount() >
+                    computer.getBookCount() ? "Player wins!" : "Computer wins!"); //uses ternary operator to display winner instead of an if/else
         }
         return "Game still in progress.";
     }
