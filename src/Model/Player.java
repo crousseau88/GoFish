@@ -100,7 +100,7 @@ public class Player {
         Map<Rank, ArrayList<Card>> rankCount = new HashMap<>();
         boolean pairFound = false;
 
-        for (Card card : new ArrayList<>(hand.getCards())) { // Use a copy for safe removal
+        for (Card card : new ArrayList<>(hand.getCards())) { // Uses a copy for safe removal
             rankCount.putIfAbsent(card.getRank(), new ArrayList<>());
             rankCount.get(card.getRank()).add(card);
         }

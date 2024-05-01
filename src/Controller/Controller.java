@@ -39,6 +39,7 @@ public class Controller{
         });
     }
 
+    //sets up game
     private void setupGame() {
         view.getMf().getGamePanel().updatePlayerHand(model.getPlayer().getHand().getCards(), model.getDeck());
         model.getPlayer().checkForAndAddPairs();
@@ -46,7 +47,7 @@ public class Controller{
         updateGameView();
     }
 
-
+    //updates the game view
     private void updateGameView() {
         displayBookCount(); // Updates the book counts
         model.getPlayer().checkForAndAddPairs(); // Checks pairs for both players
@@ -63,6 +64,7 @@ public class Controller{
 
     }
 
+    //creates and adds game listeners
     private void addGameListeners() {
     setupCardClickListeners();
         JTextField userNameField = view.getTp().getUserNameField();
@@ -134,8 +136,10 @@ public class Controller{
         });
     }
 
+
+    //sets up card click listener
     private void setupCardClickListeners() {
-        view.getMf().getGamePanel().addPropertyChangeListener("cardClicked", evt -> {
+        view.getMf().getGamePanel().addPropertyChangeListener("cardClicked", evt -> { //event listener lambda expression
             handleCardRequest((String) evt.getNewValue());
             view.getMf().getGamePanel().revalidate();
             view.getMf().getGamePanel().repaint();
@@ -238,12 +242,15 @@ public class Controller{
         rulesFrame.add(scrollPane);
         rulesFrame.setVisible(true);
     }
+
+    //method to check if game has ended
     private void checkForGameEnd() {
         if (model.getDeck().isDeckEmpty() && model.getPlayer().getHand().getCardCount() == 0 && model.getComputer().getHand().getCardCount() == 0) {
             displayWinner();
         }
     }
 
+    //method to display popout when player or computer wins
     private void displayWinner() {
         String winnerMessage = model.determineWinner();
         JOptionPane.showMessageDialog(null, winnerMessage, "Game Over", JOptionPane.INFORMATION_MESSAGE);

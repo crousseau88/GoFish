@@ -14,7 +14,7 @@ public class MainFrame extends JFrame {
     public MainFrame() {
         super("GoFish!");
 
-        // Create initial panel
+        // Creates initial panel
         ip = new InitialPanel(this);
         add(ip);
 
