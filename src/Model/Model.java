@@ -27,30 +27,21 @@ public class Model {
 //        isPlayerTurn = true;
 //        playTurn();
 
-        //tests logic
-        System.out.println("Live Player hand: " + player.getHand().toString());//prints hand for player1
-        System.out.println("Computer hand: " + computer.getHand().toString());//prints hand for computer
-        System.out.println("-----------------------------------------------");
-        System.out.println("Live Player book count: " + player.getBookCount());
-        System.out.println("Computer book count: " + computer.getBookCount());
-        System.out.println("-----------------------------------------------");
-        System.out.println("Live Player hand: " + player.getHand().toString());//prints hand for player1
-        System.out.println("Computer hand: " + computer.getHand().toString());//prints hand for computer
-        System.out.println("-----------------------------------------------");
-        System.out.println("Username:" + player.getUsername());
-        System.out.println("-----------------------------------------------");
-
-
+        //currently unused console debug statements
+//        System.out.println("Live Player hand: " + player.getHand().toString());//prints hand for player1
+//        System.out.println("Computer hand: " + computer.getHand().toString());//prints hand for computer
+//        System.out.println("-----------------------------------------------");
+//        System.out.println("Live Player book count: " + player.getBookCount());
+//        System.out.println("Computer book count: " + computer.getBookCount());
+//        System.out.println("-----------------------------------------------");
+//        System.out.println("Live Player hand: " + player.getHand().toString());//prints hand for player1
+//        System.out.println("Computer hand: " + computer.getHand().toString());//prints hand for computer
+//        System.out.println("-----------------------------------------------");
+//        System.out.println("Username:" + player.getUsername());
+//        System.out.println("-----------------------------------------------");
 
     }
 
-    public void playTurn() {
-        if (isPlayerTurn()) {
-            playerTurn();
-        } else {
-            computerTurn();
-        }
-    }
 
     private void dealInitialCards() {
         for (int i = 0; i < 7; i++) {
@@ -116,10 +107,10 @@ public class Model {
         }
     }
 
-    public void playerTurn() {
-        checkForPairs();
-
-    }
+//    public void playerTurn() {
+//        checkForPairs();
+//
+//    }
 
     public void toggleTurn() {
         System.out.println("Before toggle: It is " + (isPlayerTurn ? "player's" : "computer's") + " turn.");
@@ -132,47 +123,48 @@ public class Model {
 
     public void endTurn() {
         isPlayerTurn = !isPlayerTurn;
-        System.out.println((isPlayerTurn ? "Player" : "Computer") + "'s turn.");
+        System.out.println("Turn Ended, it is now " + (isPlayerTurn ? "Player" : "Computer") + "'s turn.");
 
     }
 
     public boolean computerTurn() {
-        boolean uiNeedsUpdate = false;
+        System.out.println("Computer's turn started.");
+        boolean actionTaken = false;
 
-        // Attempt to get a card from the player
-        while (true) {
+        while (!actionTaken && !deck.isDeckEmpty()) {
             Rank chosenRank = computer.chooseRankToAskFor();
             if (chosenRank != null) {
                 Card receivedCard = computer.askForCard(player, chosenRank);
+
                 if (receivedCard != null) {
+
                     computer.getHand().addCard(receivedCard);
-                    uiNeedsUpdate = true;  //game state change
-                    if (!computer.checkForAndAddPairs()) {
-                        // if no pairs formed, break out and draw from the deck
-                        break;
+                    System.out.println("Computer successfully took " + receivedCard + " from player.");
+                    actionTaken = true;
+                    if (computer.checkForAndAddPairs()) {
+                        System.out.println("Pair formed by computer. Checking for more...");
+                        continue;
                     }
-                } else {
-                   //breaks out in order to draw a new card
-                    break;
                 }
-            } else {
-                // no more cards to ask for so breaks
-                break;
             }
+            break;
         }
-        //draws from the deck
-        if (!deck.isDeckEmpty()) {
+
+        if (!actionTaken && !deck.isDeckEmpty()) {
             Card drawnCard = deck.dealCard();
             computer.getHand().addCard(drawnCard);
-            uiNeedsUpdate = true;
+            System.out.println("Computer drew " + drawnCard + " from the deck.");
+            actionTaken = true;
             computer.checkForAndAddPairs();
         }
 
-        // end the computer's turn
+        System.out.println("Computer's hand: " + computer.getHand().toString());
+        System.out.println("Computer's books: " + computer.getBookCount());
+
         endTurn();
         toggleTurn();
 
-        return uiNeedsUpdate;
+        return actionTaken;
     }
 
 
@@ -210,15 +202,9 @@ public class Model {
 
 
     public String determineWinner() {
-        if( player.getHand().getCardCount() == 0 && computer.getHand().getCardCount() == 0){
-            return "Game over";
+        if (player.getHand().getCardCount() == 0 && computer.getHand().getCardCount() == 0) {
+            return "Game over. " + (player.getBookCount() > computer.getBookCount() ? "Player wins!" : "Computer wins!");
         }
-        if (player.getBookCount() > computer.getBookCount()) {
-            return "Player";
-        } else if (computer.getBookCount() > player.getBookCount()) {
-            return "Computer";
-        } else {
-            return "It's a tie!";
-        }
+        return "Game still in progress.";
     }
 }

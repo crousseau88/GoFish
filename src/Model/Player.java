@@ -99,25 +99,29 @@ public class Player {
     public boolean checkForAndAddPairs() {
         Map<Rank, ArrayList<Card>> rankCount = new HashMap<>();
         boolean pairFound = false;
-        for (Card card : hand.getCards()) {
+
+        for (Card card : new ArrayList<>(hand.getCards())) { // Use a copy for safe removal
             rankCount.putIfAbsent(card.getRank(), new ArrayList<>());
             rankCount.get(card.getRank()).add(card);
         }
-        Iterator<Map.Entry<Rank, ArrayList<Card>>> iterator = rankCount.entrySet().iterator();
-        while (iterator.hasNext()) {
-            Map.Entry<Rank, ArrayList<Card>> entry = iterator.next();
-            ArrayList<Card> cardsOfSameRank = entry.getValue();
 
-            if (cardsOfSameRank.size() == 2) {
+        List<Card> toRemove = new ArrayList<>();
+        for (Map.Entry<Rank, ArrayList<Card>> entry : rankCount.entrySet()) {
+            ArrayList<Card> cardsOfSameRank = entry.getValue();
+            if (cardsOfSameRank.size() >= 2) {
                 pairFound = true;
-                for (Card card : cardsOfSameRank) {
-                    books.addCard(card);
-                    hand.removeCard(card);
+                while (cardsOfSameRank.size() >= 2) {
+                    toRemove.add(cardsOfSameRank.get(0));
+                    toRemove.add(cardsOfSameRank.get(1));
+                    books.addCard(cardsOfSameRank.get(0));
+                    books.addCard(cardsOfSameRank.get(1));
+                    cardsOfSameRank.remove(0);
+                    cardsOfSameRank.remove(0);
                 }
-                increaseScore(1);
-                iterator.remove();
             }
         }
+
+        hand.getCards().removeAll(toRemove);
         return pairFound;
     }
     public boolean hasRank(Rank rank) {

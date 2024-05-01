@@ -51,7 +51,9 @@ public class Controller{
         displayBookCount(); // Updates the book counts
         model.getPlayer().checkForAndAddPairs(); // Checks pairs for both players
         model.getComputer().checkForAndAddPairs();
+        checkForGameEnd();
         SwingUtilities.invokeLater(() -> { //updates the game status and repaints
+            //the invokeLater() method is a thread safe way to trigger an update event within Swing.
             view.getMf().getGamePanel().updatePlayerHand(model.getPlayer().getHand().getCards(), model.getDeck());
             String turnStatus = model.isPlayerTurn() ? "Player's turn." : "Computer's turn.";
             view.getMf().getGamePanel().updateGameStatus("It is: " + turnStatus);
@@ -97,9 +99,11 @@ public class Controller{
             public void actionPerformed(ActionEvent e) {
                 System.out.println("Draw Card button clicked.");
                 model.drawCard(model.getPlayer());
-                model.getPlayer().checkForAndAddPairs();
                 view.getMf().getGamePanel().updatePlayerHand(model.getPlayer().getHand().getCards(), model.getDeck());
                 view.getMf().getGamePanel().updateGameStatus("Card Drawn. Your turn continues.");
+
+                view.getMf().getGamePanel().revalidate();
+                view.getMf().getGamePanel().repaint();
             }
         });
 
@@ -107,14 +111,19 @@ public class Controller{
             @Override
             public void actionPerformed(ActionEvent e) {
                 // Player manually ends their turn
+                model.getPlayer().checkForAndAddPairs();
+                checkForGameEnd();
                 model.endTurn();
+                System.out.println("Player ends turn");
                 // computer automatically takes its turn
                 boolean uiNeedsUpdate = model.computerTurn();
                 if (uiNeedsUpdate) {
-                    updateGameView();  // UI updates  after the computer's turn
+                    SwingUtilities.invokeLater(() -> {
+                        System.out.println("Computer ends turn");
+                        view.getMf().getGamePanel().updateGameStatus("Player's turn.");
+                        updateGameView();  // UI updates after the computer's turn
+                    });
                 }
-                // Players turn againg
-                view.getMf().getGamePanel().updateGameStatus("Player's turn.");
             }
         });
 
@@ -142,7 +151,6 @@ public class Controller{
             model.getPlayer().addCardToHand(cardRecieved);
             model.checkForPairs();
             model.toggleTurn();
-            updateView();
             displayMatchFound();
 
 
@@ -150,7 +158,8 @@ public class Controller{
             view.getMf().getGamePanel().updateGameStatus("Computer does not have the card of rank: " + rank);
 
         }
-
+        view.getMf().getGamePanel().revalidate();
+        view.getMf().getGamePanel().repaint();
 
     }
 
@@ -177,35 +186,6 @@ public class Controller{
         soonFrame.add(scrollPane);
         soonFrame.setVisible(true);
     }
-    private void updateView() {
-        if(model.getPlayer().getHand().getCardCount() == 0 && model.getComputer().getHand().getCardCount() ==0) {
-            JFrame winFrame = new JFrame("Game Over");
-            winFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-            winFrame.setSize(400, 300);
-            winFrame.setLocationRelativeTo(null);
-
-            JTextArea winTextArea = new JTextArea();
-            winTextArea.setEditable(false);
-            winTextArea.setFont(new Font("Arial", Font.PLAIN, 14));
-            winTextArea.setBackground(new Color(0, 100, 0));
-            winTextArea.setLineWrap(true);
-            winTextArea.setWrapStyleWord(true);
-
-            String winText = "Game over\n" + "Your book count is: " + model.getPlayer().getBookCount()
-                    + "\n Computers book count: " + model.getComputer().getBookCount() + "\n" +
-                    model.determineWinner();
-
-
-        }
-
-        SwingUtilities.invokeLater(() -> {
-            view.getMf().getGamePanel().updatePlayerHand(model.getPlayer().getHand().getCards(), model.getDeck());
-            String turnStatus = model.isPlayerTurn() ? "Player's turn." : "Computer's turn.";//check this line
-            view.getMf().getGamePanel().updateGameStatus("Game Started: " + turnStatus);
-
-        });
-    }
-
 
     private void displayMatchFound(){
         JFrame matchFrame = new JFrame("Match Found");
@@ -257,4 +237,16 @@ public class Controller{
         rulesFrame.add(scrollPane);
         rulesFrame.setVisible(true);
     }
+    private void checkForGameEnd() {
+        if (model.getDeck().isDeckEmpty() && model.getPlayer().getHand().getCardCount() == 0 && model.getComputer().getHand().getCardCount() == 0) {
+            displayWinner();
+        }
+    }
+
+    private void displayWinner() {
+        String winnerMessage = model.determineWinner();
+        JOptionPane.showMessageDialog(null, winnerMessage, "Game Over", JOptionPane.INFORMATION_MESSAGE);
+        view.getMf().dispose();
+    }
+
 }

@@ -60,7 +60,6 @@ public class GamePanel extends JPanel implements ActionListener {
 
         // End Turn Button
         endTurnButton = new JButton("End Turn");
-        endTurnButton.setBounds(0, 510, 800, 20);
         endTurnButton.addActionListener(this);
         add(endTurnButton);
 
@@ -118,9 +117,9 @@ public class GamePanel extends JPanel implements ActionListener {
     private void adjustComponentBounds() {
         // Adjust the bounds of components based on the panel size
         Dimension size = getSize();
+        endTurnButton.setBounds((size.width /2 - 90) , (size.height - 100) , 200, 20);
         gameStatusLabel.setBounds((size.width - 300) / 2, 0, 600, 50);
         drawCardButton.setBounds(size.width / 2 - 45, size.height - 460, 90, 65);
-        endTurnButton.setBounds(0, size.height - 90, size.width -30, 20);
         playerHandPanel.setBounds(0, size.height - 300, size.width, 100);
         // Computer Config
         cCount.setBounds(size.width - 70, 10, 65, 90);
