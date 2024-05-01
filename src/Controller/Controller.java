@@ -223,6 +223,8 @@ public class Controller{
         JTextArea rulesTextArea = new JTextArea();
         rulesTextArea.setEditable(false);
         rulesTextArea.setFont(new Font("Arial", Font.PLAIN, 14));
+        rulesTextArea.setBackground(new Color(0, 100, 0));
+        rulesTextArea.setForeground(Color.WHITE);
         rulesTextArea.setLineWrap(true);
         rulesTextArea.setWrapStyleWord(true);
 
