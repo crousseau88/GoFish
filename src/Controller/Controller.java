@@ -197,11 +197,12 @@ public class Controller{
         matchTextArea.setEditable(false);
         matchTextArea.setFont(new Font("Arial", Font.PLAIN, 14));
         matchTextArea.setBackground(new Color(0, 100, 0));
+        matchTextArea.setForeground(Color.WHITE);
         matchTextArea.setLineWrap(true);
         matchTextArea.setWrapStyleWord(true);
 
         String matchText = "Match Found and added to book\n" + "Your book count is: " + model.getPlayer().getBookCount()
-                + "\n Computers book count: " + model.getComputer().getBookCount() + " Computers hand count: " + model.getComputer().getHand().getCards().size();
+                + "\nComputers book count: " + model.getComputer().getBookCount() + " Computers hand count: " + model.getComputer().getHand().getCards().size();
 
         matchTextArea.setText(matchText);
         JScrollPane scrollPane = new JScrollPane(matchTextArea);
