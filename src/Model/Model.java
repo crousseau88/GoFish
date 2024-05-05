@@ -1,15 +1,22 @@
 package Model;
-
-//TODO add comments / javadoc to code
+/**
+ * Filename: Model.java
+ * Short description:Model class for program
+ * IST 242 Assignment:GUI Programming Project
+ * @author Chad Rousseau, Christopher Rusnak, Tyler Mascherino
+ * @version 05/3/2024
+ */
 
 public class Model {
+
+    //instance variables
     private Player player;
     private Player computer;
     private Deck deck;
     private Hand hand;
     private boolean isPlayerTurn;
 
-
+    //constructor
     public Model() {
         player = new Player();
         computer = new Player();
@@ -19,14 +26,14 @@ public class Model {
 
 
     }
-
+    //method to start the game
     public void startGame() {
         deck.shuffleDeck();
         dealInitialCards();
         checkForPairs();
     }
 
-
+    //deals initial cards to each player on game start
     private void dealInitialCards() {
         for (int i = 0; i < 7; i++) {
             player.addCardToHand(deck.dealCard());
@@ -52,7 +59,11 @@ public class Model {
         }
     }
 
-
+    /**
+     * Method to draw cards to minimum count of 7 after play occurs
+     * @param player player that is being dealt cards
+     * @param minimumCardCount minimum count of cards needed in a hand for gameplay
+     */
     private void drawCardsToMinimum(Player player, int minimumCardCount) {
         System.out.println("Starting draw to minimum for " + player.getUsername() + " needing " + minimumCardCount);
 
@@ -63,7 +74,10 @@ public class Model {
 
     }
 
-    //draws cards
+    /**
+     * Method to draw a card from the deck
+     * @param player player that is drawing the card
+     */
     public void drawCard(Player player) {
         if (!deck.isDeckEmpty()) {
             Card drawnCard = deck.dealCard();
@@ -74,7 +88,7 @@ public class Model {
         }
     }
 
-    //method to ask computer for a card
+    //Method which asks computer for specific card based on rank
     private void askForCardFromComputer() {
         Rank requestedRank = player.chooseRankToAskFor();
         Card receivedCard = computer.giveCard(requestedRank);
@@ -92,6 +106,7 @@ public class Model {
         }
     }
 
+    //method used to toggle player turn
     public void toggleTurn() {
         System.out.println("Before toggle: It is " + (isPlayerTurn ? "player's" : "computer's") + " turn.");
         isPlayerTurn = !isPlayerTurn;
@@ -100,16 +115,16 @@ public class Model {
     }
 
 
-
+    //method used to end turn
     public void endTurn() {
         isPlayerTurn = !isPlayerTurn;
         System.out.println("Turn Ended, it is now " +
                 (isPlayerTurn ? "Player" : "Computer") + "'s turn."); //uses ternary operator in place of if/else
 
     }
-
+    //method used to run computers turn logic
     public boolean computerTurn() {
-        System.out.println("Computer's turn started.");
+        System.out.println("Computer's turn started."); //debug statement
         boolean actionTaken = false;
 
         while (!actionTaken && !deck.isDeckEmpty()) {
@@ -150,17 +165,19 @@ public class Model {
 
 
 
-
+    //method to determine if it is players turn for displaying in GUI
     public boolean isPlayerTurn() {
         checkForPairs();
         return isPlayerTurn;
     }
 
+
+    //determines if computer has the rank
     public boolean askComputerForRank(Rank rank) {
         return computer.hasRank(rank);
     }
 
-
+    //gets and sets
     public Player getComputer() {
         return computer;
     }

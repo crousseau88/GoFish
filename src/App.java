@@ -1,7 +1,14 @@
 import Controller.Controller;
 import Model.Model;
 import View.View;
-
+/**
+ * Filename: App.java
+ * Short description: Application class for program
+ * IST 242 Assignment:GUI Programming Project
+ *
+ * @author Chad Rousseau, Christopher Rusnak, Tyler Mascherino
+ * @version 05/3/2024
+ */
 public class App {
     public static void main(String[] args) {
 
@@ -11,6 +18,3 @@ public class App {
 
     }
 }
-//TODO add comments / javadoc to code
-//TODO fix GUI updates within game panel so accurate information is displayed
-//TODO test logic

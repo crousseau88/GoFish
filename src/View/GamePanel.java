@@ -1,9 +1,17 @@
 package View;
+/**
+ * Filename: GamePanel.java
+ * Short description: Used for setup of the game labels/Buttons for user interaction
+ * IST 242 Assignment:GUI Programming Project
+ *
+ *
+ * @author Chad Rousseau, Christopher Rusnak, Tyler Mascherino
+ * @version 05/3/2024
+ */
 
 import Model.Card;
 import Model.Deck;
 import Model.Player;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -11,9 +19,9 @@ import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.util.ArrayList;
-//TODO add comments / javadoc to code
 
 public class GamePanel extends JPanel implements ActionListener {
+    //Instance variables
     private JLabel gameStatusLabel;
     private JButton endTurnButton;
     private JButton drawCardButton;
@@ -28,6 +36,7 @@ public class GamePanel extends JPanel implements ActionListener {
     private int compCount = 0;
 
     public GamePanel(Player player1, Deck deck) {
+        // Layout setup that is used to configure positions of instance variables
         setLayout(null);
         setBackground(new Color(0, 100, 0));
 
@@ -73,26 +82,27 @@ public class GamePanel extends JPanel implements ActionListener {
         updatePlayerHand(player1.getHand().getCards(), deck);
 
 
+        // Computer Config
+        // Used for the computer Icon and match stack
         cCount = new JLabel("" + compCount);
         cCount.setForeground(Color.YELLOW);
         cCount.setFont(new Font("Arial", Font.BOLD, 20));
         add(cCount);
-        // Computer Config
-        // Used for the computer Icon and match stack
 
         ImageIcon cStackIcon = new ImageIcon("Cards/b1fv.png");
         computerStack = new JLabel(cStackIcon);
         add(computerStack);
 
 
+        // Player Config
+        // used for the Player match stack, displayable cards
         pCount = new JLabel("" + playerCount);
         pCount.setForeground(Color.YELLOW);
         pCount.setFont(new Font("Arial", Font.BOLD, 20));
         add(pCount);
         revalidate();
         repaint();
-        // Player Config
-        // used for the Player match stack, displayable cards
+
         ImageIcon pStackIcon = new ImageIcon("Cards/b2fv.png");
         playerStack = new JLabel(pStackIcon);
         add(playerStack);
@@ -134,6 +144,7 @@ public class GamePanel extends JPanel implements ActionListener {
         computerNameLabel.setBounds(getWidth() - 250, 50, 200, 30);
     }
 
+    // Method used to update the array of displayed cards that are showed to the player
     public void updatePlayerHand(ArrayList<Card> hand, Deck deck) {
         playerHandPanel.removeAll();
         for (Card card : hand) {
@@ -172,6 +183,7 @@ public class GamePanel extends JPanel implements ActionListener {
         gameStatusLabel.setText(status);
     }
 
+    // Sets and Gets
 
     public void setPlayerCount(int playerCount) {
         this.playerCount = playerCount;

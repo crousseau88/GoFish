@@ -1,17 +1,24 @@
 package View;
-
-
 import Model.Deck;
 import Model.Player;
-
 import javax.swing.*;
-//TODO add comments / javadoc to code
 
+/**
+ * Filename: MainFrame.java
+ * Short description: Used for setup of the frame where the gamePanel and titlePanel will be displayed
+ * IST 242 Assignment:GUI Programming Project
+ *
+ *
+ * @author Chad Rousseau, Christopher Rusnak, Tyler Mascherino
+ * @version 05/3/2024
+ */
 public class MainFrame extends JFrame {
+    // Instance Variables
     private InitialPanel ip;
     private GamePanel gamePanel;
 
     public MainFrame() {
+        // Title
         super("GoFish!");
 
         // Creates initial panel
@@ -25,6 +32,7 @@ public class MainFrame extends JFrame {
 
 
     public void showGamePanel() {
+        // Used for the display of gamepanel and the input from the player for "username"
         getContentPane().remove(ip);
         String username;
         username = ip.getTp().getUserNameField().getText();
@@ -37,6 +45,7 @@ public class MainFrame extends JFrame {
         repaint();
     }
 
+    // Sets / Gets
     public InitialPanel getIp() {
         return ip;
     }

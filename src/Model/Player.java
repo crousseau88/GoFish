@@ -1,14 +1,20 @@
 package Model;
-
+/**
+ * Filename: Player.java
+ * Short description:Player class for program
+ * IST 242 Assignment:GUI Programming Project
+ * @author Chad Rousseau, Christopher Rusnak, Tyler Mascherino
+ * @version 05/3/2024
+ */
 import java.util.*;
-//TODO add comments / javadoc to code
+
 
 public class Player {
 
     //main class for Players
     private Hand hand;
     private Hand books = new Hand();
-    //keep track of wins can write to file and rank players
+    //keep track of wins can write to file and rank players not implemented
     private int score;
     private String username = "Computer";
 
@@ -124,6 +130,7 @@ public class Player {
         hand.getCards().removeAll(toRemove);
         return pairFound;
     }
+    //method for checking if hand contains rank
     public boolean hasRank(Rank rank) {
         for (Card card : hand.getCards()) {
             if (card.getRank() == rank) {
@@ -132,6 +139,7 @@ public class Player {
         }
         return false;
     }
+    //getters and setters
     public Hand getBooks() {
         return books;
     }

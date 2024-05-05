@@ -1,16 +1,23 @@
 package Model;
+/**
+ * Filename: Deck.java
+ * Short description:Decl class for program
+ * IST 242 Assignment:GUI Programming Project
+ *
+ * @author Chad Rousseau, Christopher Rusnak, Tyler Mascherino
+ * @version 05/3/2024
+ */
 
 import javax.swing.*;
 import java.util.ArrayList;
 import java.util.Collections;
-//TODO add comments / javadoc to code
 
 public class Deck {
     private ArrayList<Card> deck = new ArrayList<>();
     //create arraylist of image icons
     private ArrayList<ImageIcon> img = new ArrayList<>();
 
-
+    //constructor
     public Deck() {
         imageIcons();
         int counter = 0;
@@ -24,19 +31,23 @@ public class Deck {
 
     }
 
+    //checks the size of the deck
     public int checkDeckSize() {
         return deck.size();
     }
 
+    //determines if the deck is empty
     public boolean isDeckEmpty() {
         return deck.isEmpty();
     }
 
+    //method to shuffle the deck of cards
     public void shuffleDeck() {
         Collections.shuffle(deck);
 
     }
 
+    //creates the array list of image icons for cards
     private void imageIcons() {
         img.add(new ImageIcon("Cards/1.png", "A of Spades"));
         img.add(new ImageIcon("Cards/2.png", "2 of Spades"));

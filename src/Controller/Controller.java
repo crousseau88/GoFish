@@ -1,21 +1,26 @@
 package Controller;
 
-import Model.Model;
-import View.View;
-import Model.Rank;
+/**
+ * Filename: Controller.java
+ * Short description:Controller class for program
+ * IST 242 Assignment:GUI Programming Project
+ *
+ * @author Chad Rousseau, Christopher Rusnak, Tyler Mascherino
+ * @version 05/3/2024
+ */
 import Model.Card;
-
+import Model.Model;
+import Model.Rank;
+import View.View;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-//TODO add comments / javadoc to code
-
 public class Controller{
     private Model model;
     private View view;
 
-
+    //constructor
     public Controller(Model m, View v) {
         this.model = m;
         this.view = v;
@@ -66,7 +71,7 @@ public class Controller{
 
     //creates and adds game listeners
     private void addGameListeners() {
-    setupCardClickListeners();
+        setupCardClickListeners();
         JTextField userNameField = view.getTp().getUserNameField();
         userNameField.addActionListener(new ActionListener() {
             @Override
@@ -177,6 +182,8 @@ public class Controller{
         JTextArea soonTextArea = new JTextArea();
         soonTextArea.setEditable(false);
         soonTextArea.setFont(new Font("Arial", Font.PLAIN, 14));
+        soonTextArea.setBackground(new Color(0, 100, 0));
+        soonTextArea.setForeground(Color.white);
         soonTextArea.setLineWrap(true);
         soonTextArea.setWrapStyleWord(true);
 
